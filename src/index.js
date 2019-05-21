@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'; // 创建虚拟dom
+import ReactDOM from 'react-dom'; // 渲染dom操作
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
