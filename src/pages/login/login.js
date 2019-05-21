@@ -16,6 +16,7 @@ class Login extends Component {
         const { getFieldDecorator } = this.props.form;
         return (
           <Form onSubmit={this.handleSubmit} className="login-form">
+            <div className="login-title">记账本</div>
             <Form.Item>
               {getFieldDecorator("username", {
                 rules: [{ required: true, message: "请输入用户名!" }]
