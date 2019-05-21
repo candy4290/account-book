@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import './App.less';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Login from './login/login';
+import WrappedNormalLoginForm from './login/login';
 
 class App extends Component {
   render() {
@@ -10,7 +10,7 @@ class App extends Component {
       return (
         <BrowserRouter>
           <Switch>
-              <Route exact path="/" component={Login}/>
+              <Route exact path="/" component={WrappedNormalLoginForm}/>
           </Switch>
         </BrowserRouter>
       )
