@@ -1,3 +1,5 @@
+## 这是一个响应式的记账本噢
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
