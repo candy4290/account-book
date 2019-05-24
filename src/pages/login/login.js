@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './login.less';
 import { Form, Icon, Input, Button, Checkbox, message } from "antd";
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Home from '../home/home';
 class Login extends Component {
     handleSubmit = e => {
@@ -13,6 +13,7 @@ class Login extends Component {
               return (
                 <BrowserRouter>
                   <Switch>
+                    <Redirect from='/' to='/home' />
                       <Route exact path="/home" component={Home}/>
                   </Switch>
                 </BrowserRouter>
