@@ -15,7 +15,7 @@ class Home extends React.Component {
             console.log(collapsed, type);
           }}
         >
-          <div className="logo" />
+          <div className="logo">记账本</div>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
             <Menu.Item key="1">
               <Icon type="user" />
@@ -38,9 +38,9 @@ class Home extends React.Component {
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }} />
           <Content style={{ margin: '24px 16px 0' }}>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>content</div>
+            <div style={{ padding: 24, background: '#fff', minHeight: 360, height: '100%' }}>content</div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+          <Footer style={{ textAlign: 'center' }}>记账本 ©2019 Created by Cxx</Footer>
         </Layout>
       </Layout>
     }

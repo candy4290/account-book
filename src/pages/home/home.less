@@ -1,5 +1,32 @@
 .logo {
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px;
+  border: 1px solid #55a9ef;
+  box-shadow: 0px 0px 0.8rem #88c0f0;
+  background: linear-gradient(90deg, #212f46, #5b99ff);
+  height: 32px;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  color: #fff;
+}
+  .ant-layout.ant-layout-has-sider {
+    height: 100%;
   }
+  @keyframes clipMe {
+    0%,
+    100% {
+    clip: rect(0, 4.8rem, 4.8rem, 4.3rem);
+    }
+    25% {
+    clip: rect(0px, 4.8rem, .3rem, 0);
+    }
+    50% {
+    clip: rect(0, .3rem, 4.8rem, 0);
+    }
+    75% {
+    clip: rect(4.3rem, 4.8rem, 4.8rem, 0rem);
+    }
+}

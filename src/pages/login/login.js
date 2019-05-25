@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './login.less';
 import { Form, Icon, Input, Button, Checkbox, message } from "antd";
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import Home from '../home/home';
 class Login extends Component {
     handleSubmit = e => {
         e.preventDefault();
@@ -10,15 +8,10 @@ class Login extends Component {
           if (!err) {
             console.log("Received values of form: ", values);
             if (values.username === 'admin' && values.password === 'admin') {
-              return (
-                <BrowserRouter>
-                  <Switch>
-                    <Redirect from='/' to='/home' />
-                      <Route exact path="/home" component={Home}/>
-                  </Switch>
-                </BrowserRouter>
-              )
+              localStorage.setItem('login', true)
+              this.props.history.push('/');
             } else {
+              localStorage.setItem('login', false)
               message.error('用户名或密码错误！');
             }
           }
