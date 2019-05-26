@@ -50,7 +50,7 @@ class Login extends Component {
                   valuePropName: "checked",
                   initialValue: true
                 })(<Checkbox>记住密码</Checkbox>)}
-                <a className="login-form-forgot" href="">
+                <a className="login-form-forgot" href="null">
                   忘记密码
                 </a>
                 <Button
@@ -60,7 +60,7 @@ class Login extends Component {
                 >
                   登录
                 </Button>
-                或者 <a href="">前往注册!</a>
+                或者 <a href="null">前往注册!</a>
               </Form.Item>
             </Form>
           </div>

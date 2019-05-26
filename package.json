@@ -15,7 +15,7 @@
     "react-scripts": "^3.0.1"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "set HOST=192.168.1.101 && react-app-rewired start ",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",

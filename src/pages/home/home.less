@@ -12,21 +12,29 @@
   border-radius: 5px;
   color: #fff;
 }
-  .ant-layout.ant-layout-has-sider {
-    height: 100%;
+.ant-layout.ant-layout-has-sider {
+  height: 100%;
+}
+@keyframes clipMe {
+  0%,
+  100% {
+  clip: rect(0, 4.8rem, 4.8rem, 4.3rem);
   }
-  @keyframes clipMe {
-    0%,
-    100% {
-    clip: rect(0, 4.8rem, 4.8rem, 4.3rem);
-    }
-    25% {
-    clip: rect(0px, 4.8rem, .3rem, 0);
-    }
-    50% {
-    clip: rect(0, .3rem, 4.8rem, 0);
-    }
-    75% {
-    clip: rect(4.3rem, 4.8rem, 4.8rem, 0rem);
-    }
+  25% {
+  clip: rect(0px, 4.8rem, .3rem, 0);
+  }
+  50% {
+  clip: rect(0, .3rem, 4.8rem, 0);
+  }
+  75% {
+  clip: rect(4.3rem, 4.8rem, 4.8rem, 0rem);
+  }
+}
+.user-info {
+  float: right;
+  padding:0 16px;
+  cursor: pointer;
+  img {
+    margin-right: 12px;
+  }
 }
