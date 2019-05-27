@@ -9,7 +9,7 @@ class App extends Component {
     return <BrowserRouter>
     <Switch>
       {routerConfig.map((r, index) => 
-        <AuthRoute key={index} exact path={r.path} component={r.component} auth={r.auth}/>
+        <AuthRoute key={index} exact={r.exact} path={r.path} component={r.component} auth={r.auth}/>
       )}
       <Route component={NoMatch} />
     </Switch>
