@@ -8,12 +8,18 @@ export default class AuthRoute extends React.Component {
     render() {
         if (this.props.auth) {
             if (localStorage.getItem('login')) {
-                return <Route exact={this.props.exact} path={this.props.path} component={this.props.component}/>;
+                return <Route exact={this.props.exact} path={this.props.path}
+                render={() => (
+                    <this.props.component {...this.props} />
+                )} />;
             } else {
                 // 未登录跳转到登录页面
                 return <Redirect to='/login' />
             }
         }
-        return <Route exact={this.props.exact} path={this.props.path} component={this.props.component}/>;
+        return <Route exact={this.props.exact} path={this.props.path} component={this.props.component} 
+                render={(props) => (
+                        <props.component {...props} childs={props.childs}/>
+        )} />;
     }
 }
