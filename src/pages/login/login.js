@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './login.less';
 import { Form, Icon, Input, Button, Checkbox, message } from "antd";
-class Login extends Component {
+class Login extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {

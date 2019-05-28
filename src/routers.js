@@ -5,6 +5,7 @@ import Bill from './pages/bill/bill';
 import Book from './pages/book/book';
 
 const routerConfig = [
+    {path: '/login', component: WrappedNormalLoginForm, children: []},
     {
         path: '/', component: Home, auth: true, exact: false,
         children: [
@@ -13,6 +14,5 @@ const routerConfig = [
             {path: '/book', component: Book, exact: true, title: "记账", icon: 'upload'},
         ]
     },
-    {path: '/login', component: WrappedNormalLoginForm, children: []}
 ];
 export default routerConfig;

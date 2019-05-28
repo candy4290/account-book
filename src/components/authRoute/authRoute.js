@@ -17,9 +17,9 @@ export default class AuthRoute extends React.Component {
                 return <Redirect to='/login' />
             }
         }
-        return <Route exact={this.props.exact} path={this.props.path} component={this.props.component} 
+        return <Route exact={this.props.exact} path={this.props.path}
                 render={(props) => (
-                        <props.component {...props} childs={props.childs}/>
+                    <props.component {...props} childs={props.childs}/>
         )} />;
     }
 }
