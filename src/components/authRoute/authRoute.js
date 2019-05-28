@@ -8,7 +8,7 @@ export default class AuthRoute extends React.Component {
     render() {
         if (this.props.auth) {
             if (localStorage.getItem('login')) {
-                return <Route exact={this.props.exact} path={this.props.path}
+                return <Route
                 render={() => (
                     <this.props.component {...this.props} />
                 )} />;
@@ -17,9 +17,9 @@ export default class AuthRoute extends React.Component {
                 return <Redirect to='/login' />
             }
         }
-        return <Route exact={this.props.exact} path={this.props.path}
+        return <Route
                 render={(props) => (
-                    <props.component {...props} childs={props.childs}/>
+                        <this.props.component {...this.props}/>
         )} />;
     }
 }

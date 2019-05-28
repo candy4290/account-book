@@ -1,14 +1,15 @@
-import { Route, Link, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter } from 'react-router-dom';
 import React from 'react';
 import './home.less';
 import { Layout, Menu, Icon } from 'antd';
+import {withRouter} from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
 class Home extends React.Component {
   constructor(props) {
     super();
   }
   menuSelected(event) {
-    
+    this.props.history.push(this.props.childs[+event.key].path);
   }
   render() {
       return <BrowserRouter>
@@ -30,7 +31,7 @@ class Home extends React.Component {
             {this.props.childs.map((child, index) => 
               <Menu.Item key={index}>
                 <Icon type={child.icon} />
-                <span className="nav-text"><Link to={child.path}>{child.title}</Link></span>
+                <span className="nav-text">{child.title}</span>
               </Menu.Item>
             )},
           </Menu>
@@ -55,4 +56,4 @@ class Home extends React.Component {
     </BrowserRouter>
   }
 }
-export default Home;
+export default withRouter(Home);
