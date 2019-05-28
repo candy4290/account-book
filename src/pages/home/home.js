@@ -1,4 +1,4 @@
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import React from 'react';
 import './home.less';
 import { Layout, Menu, Icon } from 'antd';
@@ -12,8 +12,7 @@ class Home extends React.Component {
     this.props.history.push(this.props.childs[+event.key].path);
   }
   render() {
-      return <BrowserRouter>
-      <Layout>
+      return <Layout>
         <Sider
           breakpoint="lg"
           collapsedWidth="0"
@@ -53,7 +52,6 @@ class Home extends React.Component {
           <Footer style={{ textAlign: 'center' }}>记账本 ©2019 Created by Cxx</Footer>
         </Layout>
       </Layout>
-    </BrowserRouter>
   }
 }
 export default withRouter(Home);
