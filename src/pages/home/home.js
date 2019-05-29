@@ -3,10 +3,11 @@ import React from 'react';
 import './home.less';
 import { Layout, Menu, Icon } from 'antd';
 import {withRouter} from "react-router-dom";
+import nprogressHoc from '../../components/nprogress/nprogress';
 const { Header, Content, Footer, Sider } = Layout;
 class Home extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {currentSelectedIndex: '0'}
   }
   
@@ -64,4 +65,4 @@ class Home extends React.Component {
     </Layout>
   }
 }
-export default withRouter(Home);
+export default nprogressHoc(withRouter(Home));

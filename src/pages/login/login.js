@@ -2,6 +2,7 @@ import React from 'react';
 import './login.less';
 import { Form, Icon, Input, Button, Checkbox, message } from "antd";
 import {withRouter} from "react-router-dom";
+import nprogressHoc from '../../components/nprogress/nprogress';
 class Login extends React.Component {
   constructor(props) {
     super();
@@ -72,4 +73,4 @@ class Login extends React.Component {
     }
 }
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(Login);
-export default withRouter(WrappedNormalLoginForm);
+export default nprogressHoc(withRouter(WrappedNormalLoginForm));

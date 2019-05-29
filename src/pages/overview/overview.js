@@ -1,12 +1,9 @@
 import React from 'react';
 import './overview.less';
-import NProgress from 'nprogress';
+import nprogressHoc from '../../components/nprogress/nprogress';
 class Overview extends React.Component {
-    componentDidMount() {
-        NProgress.start();
-    }
     render() {
         return <div>overview!!!</div>;
     }
 }
-export default Overview;
+export default nprogressHoc(Overview);
