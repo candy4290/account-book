@@ -1,16 +1,18 @@
 import { Route } from 'react-router-dom';
 import React from 'react';
 import './home.less';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Dropdown } from 'antd';
 import {withRouter} from "react-router-dom";
 import nprogressHoc from '../../components/nprogress/nprogress';
 const { Header, Content, Footer, Sider } = Layout;
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {currentSelectedIndex: '0'}
+    this.state = {
+      currentSelectedIndex: '0',
+    }
   }
-  
+
   componentWillMount() {
     const currentPathName = this.props.location.pathname;
     const currentSelectedIndex = this.props.childs.findIndex(child => child.path === currentPathName);
@@ -21,6 +23,11 @@ class Home extends React.Component {
   
   menuSelected(event) {
     this.props.history.push(this.props.childs[+event.key].path);
+  }
+
+  handleButtonClick(event) {
+    localStorage.clear();
+    this.props.history.push('/login')
   }
   render() {
     return <Layout>
@@ -48,10 +55,19 @@ class Home extends React.Component {
       </Sider>
       <Layout>
         <Header style={{ background: '#fff', padding: 0 }}>
-          <div className="user-info">
-            <img src={process.env.PUBLIC_URL + '/imgs/header/photo-default.jpg'} alt="头像" />
-            <span>陈小祥</span>
-          </div>
+          <Dropdown overlay={
+            <Menu onClick={(event) => {this.handleButtonClick(event)}}>
+              <Menu.Item key="1">
+                <Icon type="logout" />
+                  退出登录
+              </Menu.Item>
+            </Menu>
+          }>
+            <div className="user-info">
+              <img src={process.env.PUBLIC_URL + '/imgs/header/photo-default.jpg'} alt="头像" />
+              <span>陈小祥</span>
+            </div>
+          </Dropdown>
         </Header>
         <Content style={{ margin: '24px 16px 0' }}>
           <div style={{ padding: 24, background: '#fff', minHeight: 360, height: '100%' }}> 
