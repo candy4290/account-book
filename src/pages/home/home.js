@@ -4,12 +4,14 @@ import './home.less';
 import { Layout, Menu, Icon, Dropdown } from 'antd';
 import {withRouter} from "react-router-dom";
 import nprogressHoc from '../../components/nprogress/nprogress';
+import Fullscreen from "react-full-screen";
 const { Header, Content, Footer, Sider } = Layout;
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentSelectedIndex: '0',
+      isFull: false
     }
   }
 
@@ -20,6 +22,11 @@ class Home extends React.Component {
       currentSelectedIndex: `${currentSelectedIndex}`
     })
   }
+
+  goFull = () => {
+    this.setState({ isFull: !this.state.isFull });
+  }
+
   
   menuSelected(event) {
     this.props.history.push(this.props.childs[+event.key].path);
@@ -30,7 +37,10 @@ class Home extends React.Component {
     this.props.history.push('/login')
   }
   render() {
-    return <Layout>
+    return <Fullscreen
+    enabled={this.state.isFull}
+    onChange={isFull => this.setState({isFull})}
+    > <Layout>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
@@ -54,7 +64,7 @@ class Home extends React.Component {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ background: '#fff', padding: 0 }}>
+        <Header style={{ background: '#fff', padding: 0, textAlign: 'right' }}>
           <Dropdown overlay={
             <Menu onClick={(event) => {this.handleButtonClick(event)}}>
               <Menu.Item key="1">
@@ -68,6 +78,7 @@ class Home extends React.Component {
               <span>陈小祥</span>
             </div>
           </Dropdown>
+          <Icon type={this.state.isFull ? 'fullscreen-exit' : 'fullscreen'} onClick={this.goFull}/>
         </Header>
         <Content style={{ margin: '24px 16px 0' }}>
           <div style={{ padding: 24, background: '#fff', minHeight: 360, height: '100%' }}> 
@@ -79,6 +90,7 @@ class Home extends React.Component {
         <Footer style={{ textAlign: 'center' }}>记账本 ©2019 Created by Cxx</Footer>
       </Layout>
     </Layout>
+    </Fullscreen>
   }
 }
 export default nprogressHoc(withRouter(Home));
