@@ -3,6 +3,7 @@ import './login.less';
 import { Form, Icon, Input, Button, Checkbox, message } from "antd";
 import {withRouter} from "react-router-dom";
 import nprogressHoc from '../../components/nprogress/nprogress';
+import axios from '../../config/httpClient';
 class Login extends React.Component {
   constructor(props) {
     super();
@@ -11,14 +12,16 @@ class Login extends React.Component {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          console.log("Received values of form: ", values);
-          if (values.username === 'admin' && values.password === 'admin') {
+          axios.post('/user/login', {
+          userName: values.username,
+          userPsw: values.password
+          }).then(rsp => {
             localStorage.setItem('login', true)
             this.props.history.push('/');
-          } else {
+          }).catch(err => {
             localStorage.setItem('login', false)
-            message.error('用户名或密码错误！');
-          }
+            message.error(err);
+          });
         }
       });
     };
