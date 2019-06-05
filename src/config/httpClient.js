@@ -1,8 +1,11 @@
 import axios from 'axios';
+const Api = {
+    base: 'http://localhost:8081'
+};
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
     console.log(config);
-    config.url = ('http://localhost:8081' + config.url);
+    config.url = (Api.base + config.url);
     // 在发送请求之前做些什么
     return config;
   }, function (error) {
