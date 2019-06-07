@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { message } from 'antd';
 const Api = {
-    base: 'http://localhost:8081'
+    base: 'http://localhost:8080'
 };
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -9,6 +10,7 @@ axios.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
     return config;
   }, function (error) {
+      
     // 对请求错误做些什么
     return Promise.reject(error);
   });
@@ -16,13 +18,15 @@ axios.interceptors.request.use(function (config) {
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
     const responseData = response.data;
-    if (responseData.success) {
+    if (responseData.rtnCode === '000000') { // 返回码做成可配置
         return responseData;
     } else {
+        message.error(responseData.rtnMsg); // 做成可配置
         return Promise.reject(responseData.rtnData);
     }
 }, function (error) {
     // 对响应错误做点什么
+    message.error(error.message); // 做成可配置
     return Promise.reject(error);
 });
 export default axios;

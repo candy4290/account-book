@@ -1,6 +1,6 @@
 import React from 'react';
 import './login.less';
-import { Form, Icon, Input, Button, Checkbox, message } from "antd";
+import { Form, Icon, Input, Button, Checkbox } from "antd";
 import {withRouter} from "react-router-dom";
 import nprogressHoc from '../../components/nprogress/nprogress';
 import axios from '../../config/httpClient';
@@ -16,11 +16,10 @@ class Login extends React.Component {
           userName: values.username,
           userPsw: values.password
           }).then(rsp => {
-            localStorage.setItem('login', true)
+            localStorage.setItem('login', true);
             this.props.history.push('/');
           }).catch(err => {
-            localStorage.setItem('login', false)
-            message.error(err);
+            localStorage.setItem('login', false);
           });
         }
       });
