@@ -1,13 +1,15 @@
 
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
+import { isTokenExpired } from '../../utils/util';
 export default class AuthRoute extends React.Component {
     constructor(props) {
         super();
     }
     render() {
         if (this.props.auth) {
-            if (localStorage.getItem('login')) {
+            const token = localStorage.getItem('Access-Token')
+            if (token && !isTokenExpired(token)()) {
                 return <Route render={() => (
                     <this.props.component {...this.props} />
                 )} />;

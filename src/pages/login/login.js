@@ -16,10 +16,8 @@ class Login extends React.Component {
           userName: values.username,
           userPsw: values.password
           }).then(rsp => {
-            localStorage.setItem('login', true);
             this.props.history.push('/');
           }).catch(err => {
-            localStorage.setItem('login', false);
           });
         }
       });
