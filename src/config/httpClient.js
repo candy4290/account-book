@@ -6,6 +6,10 @@ const Api = {
 };
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
+    const token = localStorage.getItem('Access-Token');
+    if (token) {
+        config.headers['access-token'] = token;
+    }
     config.url = (Api.base + config.url);
     // 在发送请求之前做些什么
     return config;
@@ -17,12 +21,9 @@ axios.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
-    console.log(response);
     const token = response.headers['access-token'];
-    console.log(token);
-    console.log(isTokenExpired(token)());
     if (token) {
-        if (!isTokenExpired(token)()) {
+        if (!isTokenExpired(token)) {
             localStorage.setItem('Access-Token', token); // 将token存储到浏览器端
         }   else {
             localStorage.removeItem('Access-Token'); // token过期，将其移除

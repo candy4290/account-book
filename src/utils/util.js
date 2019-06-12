@@ -20,7 +20,7 @@ export function decodeToken(_token) {
  * @returns
  */
 export function getTokenExpirationDate(_token) {
-    const token = this.decodeToken(_token);
+    const token = decodeToken(_token);
     return token.exp
 }
 
@@ -33,5 +33,5 @@ export function getTokenExpirationDate(_token) {
  * @returns
  */
 export function isTokenExpired(_token) {
-    return (this.getTokenExpirationDate(_token) <= new Date());
+    return (getTokenExpirationDate(_token) <= new Date() / 1000);
 }

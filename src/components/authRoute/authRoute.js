@@ -9,7 +9,7 @@ export default class AuthRoute extends React.Component {
     render() {
         if (this.props.auth) {
             const token = localStorage.getItem('Access-Token')
-            if (token && !isTokenExpired(token)()) {
+            if (token && !isTokenExpired(token)) {
                 return <Route render={() => (
                     <this.props.component {...this.props} />
                 )} />;
