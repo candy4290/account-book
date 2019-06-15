@@ -10,7 +10,10 @@ axios.interceptors.request.use(function (config) {
     if (token) {
         config.headers['access-token'] = token;
     }
-    config.url = (Api.base + config.url);
+    if (config.data === 'local') { // 请求前端本地数据
+    } else {
+        config.url = (Api.base + config.url);
+    }
     // 在发送请求之前做些什么
     return config;
   }, function (error) {
@@ -30,7 +33,7 @@ axios.interceptors.response.use(function (response) {
         }
     }
     const responseData = response.data;
-    if (responseData.rtnCode === '000000') { // 返回码做成可配置
+    if (responseData.rtnCode === '000000' || response.status === 200) { // 返回码做成可配置
         return responseData;
     } else {
         message.error(responseData.rtnMsg); // 做成可配置
