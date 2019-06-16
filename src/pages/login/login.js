@@ -7,17 +7,41 @@ import axios from '../../config/httpClient';
 class Login extends React.Component {
   constructor(props) {
     super();
+    this.state = {
+      submit: {
+        loading: false,
+        text: '登录'
+      }
+    }
   }
   handleSubmit = e => {
       e.preventDefault();
+      this.setState({
+        submit: {
+          loading: true,
+          text: '登录中...'
+        }
+      });
       this.props.form.validateFields((err, values) => {
         if (!err) {
           axios.post('/user/login', {
           userName: values.username,
           userPsw: values.password
           }).then(rsp => {
+            this.setState({
+              submit: {
+                loading: false,
+                text: '登录'
+              }
+            });
             this.props.history.push('/');
           }).catch(err => {
+            this.setState({
+              submit: {
+                loading: false,
+                text: '登录'
+              }
+            });
           });
         }
       });
@@ -62,8 +86,9 @@ class Login extends React.Component {
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
+                loading={this.state.submit.loading}
               >
-                登录
+                {this.state.submit.text}
               </Button>
               或者 <a href="null">前往注册!</a>
             </Form.Item>
