@@ -14,6 +14,9 @@ class Home extends React.Component {
       currentSelectedIndex: '0',
       isFull: false
     }
+    this.props.history.listen(route => {
+      localStorage.setItem('pageUrl', route.pathname)
+    });
   }
 
   componentWillMount() {
