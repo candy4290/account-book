@@ -1,6 +1,6 @@
 import React from 'react';
 import nprogressHoc from '../../components/nprogress/nprogress';
-import { Form, Input, Select, Button, DatePicker } from 'antd';
+import { Form, Input, Select, Button, DatePicker, message } from 'antd';
 import moment from 'moment';
 import axios from '../../config/httpClient';
 const { Option } = Select;
@@ -32,8 +32,24 @@ class Book extends React.Component {
       if (!err) {
         this.setState({
             submitLoading: true
-        })
-        console.log('Received values of form: ', values);
+        });
+        axios.post('/user/bill', {
+          consumeDate: moment(values.consumeDate).format(dateFormat),
+          consumeType: values.consumeType,
+          money: +((+(values.prefix + values.money)).toFixed(2)),
+          remark: values.remark
+        }).then(rsp => {
+          this.props.form.resetFields();
+          this.setState({
+            submitLoading: false
+          });
+          message.success('本条记录已入账！');
+        }).catch(() => {
+          this.props.form.resetFields();
+          this.setState({
+            submitLoading: false
+          });
+        });
       }
     });
   };
@@ -66,20 +82,18 @@ class Book extends React.Component {
         },
       },
     };
+    const prefixSelector = getFieldDecorator('prefix', {
+      initialValue: '-',
+    })(
+      <Select style={{ width: 70 }}>
+        <Option value="-">-</Option>
+        <Option value="+">+</Option>
+      </Select>,
+    );
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
           <Form.Item label="日期">
-            {getFieldDecorator('date-picker', config)(<DatePicker laceholder="请选择日期" style={{width: '100%'}}/>)}
-        </Form.Item>
-        <Form.Item label="金额">
-          {getFieldDecorator('money', {
-            rules: [
-              {
-                required: true,
-                message: '请输入金额',
-              },
-            ],
-          })(<Input type="number" placeholder="请输入金额" />)}
+            {getFieldDecorator('consumeDate', config)(<DatePicker laceholder="请选择日期" style={{width: '100%'}}/>)}
         </Form.Item>
         <Form.Item label="消费类型" hasFeedback>
           {getFieldDecorator('consumeType', {
@@ -94,6 +108,16 @@ class Book extends React.Component {
             <Option value={item.key} key={item.key}>{item.value}</Option>
             )}
         </Select>)}
+        </Form.Item>
+        <Form.Item label="金额">
+          {getFieldDecorator('money', {
+            rules: [
+              {
+                required: true,
+                message: '请输入金额',
+              },
+            ],
+          })(<Input addonBefore={prefixSelector} type="number" placeholder="请输入金额" />)}
         </Form.Item>
         <Form.Item label="备注" hasFeedback>
           {getFieldDecorator('remark', {

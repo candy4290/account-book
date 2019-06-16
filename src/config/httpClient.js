@@ -2,7 +2,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import { isTokenExpired } from '../utils/util';
 const Api = {
-    base: 'http://localhost:8080/account'
+    base: 'http://192.168.1.101:8080/account'
 };
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -33,7 +33,7 @@ axios.interceptors.response.use(function (response) {
         }
     }
     const responseData = response.data;
-    if (responseData.rtnCode === '000000' || response.status === 200) { // 返回码做成可配置
+    if (responseData.rtnCode === '000000' || response.config.data === 'local') { // 返回码做成可配置
         return responseData;
     } else {
         message.error(responseData.rtnMsg); // 做成可配置
