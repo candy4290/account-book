@@ -3,9 +3,6 @@ import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import { isTokenExpired } from '../../utils/util';
 export default class AuthRoute extends React.Component {
-    constructor(props) {
-        super();
-    }
     render() {
         if (this.props.auth) {
             const token = localStorage.getItem('Access-Token')
@@ -20,7 +17,7 @@ export default class AuthRoute extends React.Component {
                 return <Redirect to='/login' />
             }
         }
-        return <Route render={(props) => (
+        return <Route render={() => (
             <this.props.component {...this.props}/>
         )} />;
     }

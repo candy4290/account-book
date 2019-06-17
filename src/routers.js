@@ -5,9 +5,9 @@ import Bill from './pages/bill/bill';
 import Book from './pages/book/book';
 
 const routerConfig = [
-    {path: '/login', component: WrappedNormalLoginForm, children: []},
+    {path: '/login', title: '登录' , component: WrappedNormalLoginForm, children: []},
     {
-        path: '/', component: Home, auth: true, exact: false,
+        path: '/', title: '首页', component: Home, auth: true, exact: false,
         children: [
             {path: '/', component: Overview, exact: true, title: "首页", icon: 'user'},
             {path: '/bill', component: Bill, exact: true, title: "账单", icon: 'video-camera'},

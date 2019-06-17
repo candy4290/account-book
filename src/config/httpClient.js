@@ -2,7 +2,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import { isTokenExpired } from '../utils/util';
 const Api = {
-    base: 'http://192.168.1.101:8080/account'
+    base: 'http://localhost:8080/account'
 };
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {

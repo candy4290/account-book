@@ -5,7 +5,7 @@ import {withRouter} from "react-router-dom";
 import nprogressHoc from '../../components/nprogress/nprogress';
 import axios from '../../config/httpClient';
 class Login extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       submit: {
