@@ -34,7 +34,12 @@ class Login extends React.Component {
                 text: '登录'
               }
             });
-            this.props.history.push('/');
+            const urlBeforeLogin = localStorage.getItem('REDIRECT_URL');
+            if (urlBeforeLogin) {
+              this.props.history.push(urlBeforeLogin)
+            } else {
+              this.props.history.push('/');
+            }
           }).catch(err => {
             this.setState({
               submit: {

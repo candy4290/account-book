@@ -15,6 +15,7 @@ export default class AuthRoute extends React.Component {
                 )} />;
             } else {
                 localStorage.removeItem('Access-Token'); // token过期，将其移除
+                localStorage.setItem('REDIRECT_URL', window.location.pathname)
                 // 未登录跳转到登录页面
                 return <Redirect to='/login' />
             }
