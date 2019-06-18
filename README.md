@@ -1,6 +1,8 @@
 ![影](https://www.hljinke.com/files/userimg/256/profilePhoto.jpg?random=1559711159951 "影")
 ## 这是一个响应式的记账本噢
 
+## ngrok内网穿透
+ng serve --open --port 80 --host 0.0.0.0 --disableHostCheck配合ngrok内网穿透使用
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -1,4 +1,5 @@
-version: '2'
+# 映射本地文件到容器
+version: '3'
 services:
   # 服务名称
   nginx:
