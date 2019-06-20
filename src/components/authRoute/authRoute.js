@@ -2,6 +2,7 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import { isTokenExpired } from '../../utils/util';
+import { message } from 'antd';
 export default class AuthRoute extends React.Component {
     render() {
         if (this.props.auth) {
@@ -11,6 +12,7 @@ export default class AuthRoute extends React.Component {
                     <this.props.component {...this.props} />
                 )} />;
             } else {
+                message.error('请先登录！');
                 localStorage.removeItem('Access-Token'); // token过期，将其移除
                 localStorage.setItem('REDIRECT_URL', window.location.pathname)
                 // 未登录跳转到登录页面

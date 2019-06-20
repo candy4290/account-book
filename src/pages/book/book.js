@@ -23,6 +23,7 @@ class Book extends React.Component {
       this.setState({
         consumeTypes: consumeTypes
       });
+    }, err => {
     })
   }
 

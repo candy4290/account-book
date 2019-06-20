@@ -48,6 +48,13 @@ class Login extends React.Component {
               }
             });
           });
+        } else {
+          this.setState({
+            submit: {
+              loading: false,
+              text: '登录'
+            }
+          });
         }
       });
     };

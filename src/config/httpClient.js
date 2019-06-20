@@ -33,8 +33,11 @@ axios.interceptors.response.use(function (response) {
         }
     }
     const responseData = response.data;
-    if (responseData.rtnCode === '000000' || response.config.data === 'local') { // 返回码做成可配置
+    if (response.config.data === 'local') {
         return responseData;
+    }
+    if (responseData.rtnCode === '000000') { // 返回码做成可配置
+        return responseData.rtnData;
     } else {
         message.error(responseData.rtnMsg); // 做成可配置
         return Promise.reject(responseData.rtnData);
