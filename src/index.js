@@ -4,15 +4,18 @@ import './index.less';
 import App from './pages/App';
 import * as serviceWorker from './serviceWorker';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
+import { IntlProvider } from 'react-intl';
 import { LocaleProvider } from 'antd';
 import moment from 'moment';
+import { flatJSON } from './utils/json-util'
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 ReactDOM.render(
-<LocaleProvider locale={zhCN}>
-<App />
-</LocaleProvider>,
- document.getElementById('root'));
+    <IntlProvider locale='en' messages={flatJSON('consumeType')}>
+        <LocaleProvider locale={zhCN}>
+            <App />
+        </LocaleProvider>
+    </IntlProvider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

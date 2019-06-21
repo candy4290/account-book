@@ -9,6 +9,8 @@ class Bill extends React.Component {
         this.state = {
             billLists: []
         }
+    }
+    componentDidMount() {
         axios.post('/user/billList').then((rsp) => {
             this.setState({
                 billLists: rsp
@@ -16,7 +18,9 @@ class Bill extends React.Component {
         })
     }
     render() {
-        return <ul>{this.state.billLists.map(item => <BillItem key={item.id} bill={item} />)}</ul>;
+        return <div>{this.state.billLists.map(item => 
+            <BillItem key={item.id} bill={item} />
+        )}</div>;
     }
 }
 export default nprogressHoc(Bill);

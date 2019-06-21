@@ -5,6 +5,9 @@
 ng serve --open --port 80 --host 0.0.0.0 --disableHostCheck配合ngrok内网穿透使用
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## 使用react-intl国际化
+1.无法获取到json文件的二级属性
+解决方案：将json数据转化为平铺结构（json-util.js）
 ## Available Scripts
 
 In the project directory, you can run:

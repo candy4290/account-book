@@ -1,0 +1,51 @@
+.bill-item {
+    display: flex;
+    @media only screen and (max-device-width : 1024px){  
+        /* 手机端 */  
+        &:active {
+            background: #eee;
+        }
+    }
+    @media screen and (min-width: 960px){
+        /* 电脑端CSS代码 */
+        &:hover {
+            background: #eee; 
+        }
+    } 
+    &-logo {
+        display: block;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        margin-top: 16px;
+        margin-right: 24px;
+    }
+    &-info {
+        
+        width: -webkit-fill-available; // 撑满剩余宽度，对块级元素生效
+        border-bottom: 0.4px solid rgba(102,102,102,.3);
+        padding: 16px 0;
+        span {
+            display: block;
+        }
+        &-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            &-remark {
+                font-size: 16px;
+            }
+            &-money {
+                color: #000;
+                font-size: 18px;
+                font-weight: 600;
+            }
+        }
+        &-type {
+            color: #a8a8a8;
+        }
+        &-consumedate {
+            color: #a8a8a8;
+        }
+    }
+}

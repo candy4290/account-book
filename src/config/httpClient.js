@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { message } from 'antd';
-import { isTokenExpired } from '../utils/util';
+import { isTokenExpired } from '../utils/token-util';
 const Api = {
     base: 'http://10.96.1.68:8080/account'
 };

@@ -5,7 +5,7 @@ import { Layout, Menu, Icon, Dropdown, Tooltip } from 'antd';
 import {withRouter} from "react-router-dom";
 import nprogressHoc from '../../components/nprogress/nprogress';
 import Fullscreen from "react-full-screen";
-import { decodeToken } from '../../utils/util';
+import { decodeToken } from '../../utils/token-util';
 const { Header, Content, Footer, Sider } = Layout;
 class Home extends React.Component {
   constructor(props) {

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
-import { isTokenExpired } from '../../utils/util';
+import { isTokenExpired } from '../../utils/token-util';
 import { message } from 'antd';
 export default class AuthRoute extends React.Component {
     render() {

@@ -3,6 +3,7 @@ import nprogressHoc from '../../components/nprogress/nprogress';
 import { Form, Input, Select, Button, DatePicker, message } from 'antd';
 import moment from 'moment';
 import axios from '../../config/httpClient';
+import { getInstant } from '../../utils/json-util';
 const { Option } = Select;
 const { TextArea } = Input;
 const dateFormat = 'YYYY-MM-DD';
@@ -15,16 +16,12 @@ class Book extends React.Component {
       submitLoading: false,
       consumeTypes: []
     };
-    axios.get('/dict_zh.json',{ data: 'local'}).then(rsp => {
-      const consumeTypes = [];
-      for(let key in rsp.consumeType) {
-        consumeTypes.push({key: key, value: rsp.consumeType[key]})
-      }
-      this.setState({
-        consumeTypes: consumeTypes
-      });
-    }, err => {
-    })
+  }
+
+  componentDidMount() {
+    this.setState({
+      consumeTypes: getInstant('consumeType')
+    });
   }
 
   handleSubmit = e => {
