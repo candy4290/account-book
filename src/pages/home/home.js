@@ -85,7 +85,7 @@ class Home extends React.Component {
               <Icon type={this.state.isFull ? 'fullscreen-exit' : 'fullscreen'} onClick={() => this.goFull()}/>
             </Tooltip>
           </Header>
-          <Content style={{ margin: '24px 16px 0' }}>
+          <Content style={{ margin: '88px 16px 0' }}>
             <div style={{ padding: 24, background: '#fff', minHeight: 360, height: '100%' }}> 
               {this.props.childs.map((child, index) => 
                 <Route key={index} exact={child.exact} path={child.path} component={child.component}/>
