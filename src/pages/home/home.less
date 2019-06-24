@@ -18,6 +18,29 @@
 .ant-layout.ant-layout-has-sider {
   height: 100%;
 }
+@media screen and (min-width: 992px){
+  /* 侧边栏出现时候 */
+  .ant-layout-header {
+    width: calc(100% - 200px) !important;
+  }
+} 
+@media screen and (max-width: 992px){
+  /* 侧边栏消失时候 */
+  .ant-layout-sider {
+    position: absolute;
+    z-index: 2;
+  }
+  .ant-layout-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .ant-layout-footer {
+    display: none;
+  }
+  .ant-layout-sider-zero-width-trigger {
+    top: 11px;
+  }
+} 
 @keyframes clipMe {
   0%,
   100% {
