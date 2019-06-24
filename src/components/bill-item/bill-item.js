@@ -1,6 +1,7 @@
 import React from 'react';
 import './bill-item.less';
 import {FormattedMessage} from 'react-intl';
+import { translateDate } from '../../utils/date-util';
 export class BillItem extends React.Component {
     render() {
         return <div className="bill-item">
@@ -13,7 +14,7 @@ export class BillItem extends React.Component {
                 <span className="bill-item-info-type">
                 <FormattedMessage id={'consumeType.' + this.props.bill.consumeType}  />
                 </span>
-                <span className="bill-item-info-consumedate">{this.props.bill.consumeDate}</span>
+                <span className="bill-item-info-consumedate">{translateDate(this.props.bill.consumeDate)}</span>
             </div>
         </div>
     }
