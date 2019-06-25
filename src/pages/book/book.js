@@ -89,7 +89,7 @@ class Book extends React.Component {
       </Select>,
     );
     return (
-      <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+      <Form {...formItemLayout} onSubmit={this.handleSubmit} style={{padding: 24}}>
           <Form.Item label="日期">
             {getFieldDecorator('consumeDate', config)(<DatePicker laceholder="请选择日期" style={{width: '100%'}}/>)}
         </Form.Item>
