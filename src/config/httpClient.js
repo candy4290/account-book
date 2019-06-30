@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { message } from 'antd';
 import { isTokenExpired } from '../utils/token-util';
+import { CONSTANTS } from '../utils/constant';
 const Api = {
     base: 'http://localhost:8080/account'
 };
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
-    const token = localStorage.getItem('Access-Token');
+    const token = localStorage.getItem(CONSTANTS.ACCESS_TOKEN);
     if (token) {
-        config.headers['access-token'] = token;
+        config.headers[CONSTANTS.ACCESS_TOKEN] = token;
     }
     if (config.data === 'local') { // 请求前端本地数据
     } else {
@@ -24,12 +25,12 @@ axios.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
-    const token = response.headers['access-token'];
+    const token = response.headers[CONSTANTS.ACCESS_TOKEN];
     if (token) {
         if (!isTokenExpired(token)) {
-            localStorage.setItem('Access-Token', token); // 将token存储到浏览器端
+            localStorage.setItem(CONSTANTS.ACCESS_TOKEN, token); // 将token存储到浏览器端
         }   else {
-            localStorage.removeItem('Access-Token'); // token过期，将其移除
+            localStorage.removeItem(CONSTANTS.ACCESS_TOKEN); // token过期，将其移除
         }
     }
     const responseData = response.data;

@@ -4,6 +4,7 @@ import { Form, Icon, Input, Button, Checkbox } from "antd";
 import {withRouter} from "react-router-dom";
 import nprogressHoc from '../../components/nprogress/nprogress';
 import axios from '../../config/httpClient';
+import { CONSTANTS } from '../../utils/constant';
 class Login extends React.Component {
   constructor() {
     super();
@@ -34,7 +35,7 @@ class Login extends React.Component {
                 text: '登录'
               }
             });
-            const urlBeforeLogin = localStorage.getItem('REDIRECT_URL');
+            const urlBeforeLogin = localStorage.getItem(CONSTANTS.REDIRECT_URL);
             if (urlBeforeLogin) {
               this.props.history.push(urlBeforeLogin)
             } else {

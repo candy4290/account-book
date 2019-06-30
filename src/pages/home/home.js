@@ -6,6 +6,7 @@ import {withRouter} from "react-router-dom";
 import nprogressHoc from '../../components/nprogress/nprogress';
 import Fullscreen from "react-full-screen";
 import { decodeToken } from '../../utils/token-util';
+import { CONSTANTS } from '../../utils/constant';
 const { Header, Content, Footer, Sider } = Layout;
 class Home extends React.Component {
   constructor(props) {
@@ -78,7 +79,7 @@ class Home extends React.Component {
             }>
               <div className="user-info">
                 <img src={process.env.PUBLIC_URL + '/imgs/header/photo-default.jpg'} alt="头像" />
-                <span>{this.state.isFull}{decodeToken(localStorage.getItem('Access-Token')).userName}</span>
+                <span>{this.state.isFull}{decodeToken(localStorage.getItem(CONSTANTS.ACCESS_TOKEN)).userName}</span>
               </div>
             </Dropdown>
             <Tooltip placement="bottom" title={this.state.isFull ? '退出全屏' : '进入全屏'}>
