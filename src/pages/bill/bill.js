@@ -11,22 +11,51 @@ class Bill extends React.Component {
     constructor() {
         super();
         this.state = {
-            billLists: []
+            billLists: [],
+            payAmount: 0,
+            incomeAmout: 0
         }
     }
     componentDidMount() {
-        axios.post('/user/billList').then((rsp) => {
+       this.queryBillList(moment(new Date()).format(monthFormat));
+    }
+
+    queryBillList(month) {
+        axios.post('/user/billList', {month: month}).then((rsp) => {
+            this.getStaticData(rsp);
             this.setState({
                 billLists: rsp
             });
         })
     }
+
+    getStaticData(list) {
+        let payAmount = 0, incomeAmout = 0;
+        list.forEach(item => {
+            if (item.money < 0) {
+                payAmount += item.money;
+            } else {
+                incomeAmout += item.money;
+            }
+        });
+        this.setState({
+            payAmount: 0 - payAmount,
+            incomeAmout: incomeAmout
+        })
+    }
+
     onChange(date) {
-        console.log(moment(date).format(monthFormat));
+        this.queryBillList(moment(date).format(monthFormat));
     }
     render() {
-        return <div>
-            <MonthPicker onChange={(event) => {this.onChange(event)}} defaultValue={moment(new Date(), monthFormat)} format={monthFormat} placeholder="Select month"></MonthPicker>
+        return <div className="cxx-bill">
+            <div className="cxx-bill-static">
+                <MonthPicker onChange={(event) => {this.onChange(event)}} defaultValue={moment(new Date(), monthFormat)} format={monthFormat} placeholder="Select month"></MonthPicker>
+                <div>
+                    <span>支出 ¥ {this.state.payAmount.toFixed(2)}</span>
+                    <span>收入 ¥ {this.state.incomeAmout.toFixed(2)}</span>
+                </div>
+            </div>
             {this.state.billLists.map(item => 
                 <BillItem key={item.id} bill={item} />
             )};
