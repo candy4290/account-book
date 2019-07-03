@@ -1,12 +1,19 @@
 .cxx-bill {
-    height: 48px;
-    background: #f0f2f5;
+    @media screen and (min-width: 992px){
+        /* 侧边栏出现时候 */
+        &-static {
+            width: calc(100% - 232px) !important;
+        }
+    } 
     &-static {
         display: flex;
-        height: 100%;
+        height: 48px;
+        background: #f0f2f5;
         align-items: center;
         justify-content: space-between;
         padding: 0 8px;
+        position: fixed;
+        width: 100%;
         .ant-calendar-picker {
             width: 100px;
         }
@@ -16,5 +23,8 @@
         span {
             display: block;
         }
+    }
+    &-list {
+        padding-top: 48px;
     }
 }

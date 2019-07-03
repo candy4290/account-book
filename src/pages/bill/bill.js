@@ -56,9 +56,11 @@ class Bill extends React.Component {
                     <span>收入 ¥ {this.state.incomeAmout.toFixed(2)}</span>
                 </div>
             </div>
-            {this.state.billLists.map(item => 
-                <BillItem key={item.id} bill={item} />
-            )};
+            <div className="cxx-bill-list">
+                {this.state.billLists.map(item => 
+                    <BillItem key={item.id} bill={item} />
+                )}
+            </div>
         </div>
     }
 }
