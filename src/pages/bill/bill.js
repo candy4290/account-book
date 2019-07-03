@@ -44,13 +44,18 @@ class Bill extends React.Component {
         })
     }
 
+    disabledDate(current) {
+        // Can not select days before today and today
+        return current && current > moment().endOf('day');
+      }
+
     onChange(date) {
         this.queryBillList(moment(date).format(monthFormat));
     }
     render() {
         return <div className="cxx-bill">
             <div className="cxx-bill-static">
-                <MonthPicker onChange={(event) => {this.onChange(event)}} defaultValue={moment(new Date(), monthFormat)} format={monthFormat} placeholder="Select month"></MonthPicker>
+                <MonthPicker disabledDate={this.disabledDate} onChange={(event) => {this.onChange(event)}} defaultValue={moment(new Date(), monthFormat)} format={monthFormat} placeholder="Select month"></MonthPicker>
                 <div>
                     <span>支出 ¥ {this.state.payAmount.toFixed(2)}</span>
                     <span>收入 ¥ {this.state.incomeAmout.toFixed(2)}</span>
