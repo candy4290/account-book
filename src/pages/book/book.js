@@ -31,7 +31,7 @@ class Book extends React.Component {
         this.setState({
             submitLoading: true
         });
-        axios.post('/user/bill', {
+        axios.post('/bill/bill', {
           consumeDate: moment(values.consumeDate).format(dateFormat),
           consumeType: values.consumeType,
           money: +((+(values.prefix + values.money)).toFixed(2)),

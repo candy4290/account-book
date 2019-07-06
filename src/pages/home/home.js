@@ -15,9 +15,6 @@ class Home extends React.Component {
       currentSelectedIndex: '0',
       isFull: false
     }
-    // this.props.history.listen(route => {
-    //   localStorage.setItem('pageUrl', route.pathname)
-    // });
   }
 
   componentWillMount() {
@@ -34,7 +31,12 @@ class Home extends React.Component {
 
   
   menuSelected(event) {
-    this.props.history.push(this.props.childs[+event.key].path);
+    const targetPathName = this.props.childs[+event.key].path;
+    this.props.history.push(targetPathName);
+    const currentSelectedIndex = this.props.childs.findIndex(child => child.path === targetPathName);
+    this.setState({
+      currentSelectedIndex: `${currentSelectedIndex}`
+    })
   }
 
   handleButtonClick() {

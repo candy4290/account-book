@@ -21,7 +21,7 @@ class Bill extends React.Component {
     }
 
     queryBillList(month) {
-        axios.post('/user/billList', {month: month}).then((rsp) => {
+        axios.post('/bill/billList', {month: month}).then((rsp) => {
             this.getStaticData(rsp);
             this.setState({
                 billLists: rsp
