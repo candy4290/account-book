@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import './statistics.less';
 import nprogressHoc from '../../components/nprogress/nprogress';
 import { Chart, Geom, Axis, Tooltip, Coord, Label, Legend, Guide } from "bizcharts";
 import DataSet from "@antv/data-set";
+import axios from "../../config/httpClient";
 
 function Statistics() {
   // 声明一个新的叫做 “count” 的 state 变量
+  const [statisticsData, setStatisticsData] = useState(0);
   const { DataView } = DataSet;
   const { Html } = Guide;
   const data = [
@@ -45,34 +47,31 @@ function Statistics() {
       }
     }
   };
+
+  useEffect(() => {
+    axios.post('/bill/statisticsDataOfMonth', {
+      month: '2019-06'
+    }).then(rsp => {
+      console.log(rsp);
+      setStatisticsData(rsp);
+    })
+  }, []);
+
+
   return (
     <div>
         <Chart
-          height={window.innerHeight}
+          height={window.innerWidth}
           data={dv}
           scale={cols}
-          padding={[80, 100, 80, 80]}
           forceFit
         >
           <Coord type={"theta"} radius={0.75} innerRadius={0.6} />
           <Axis name="percent" />
-          {/* <Legend
-            position="right"
-            offsetY={-window.innerHeight / 2 + 120}
-            offsetX={-100}
-          /> */}
           <Tooltip
             showTitle={false}
             itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
           />
-          {/* <Guide>
-            <Html
-              position={["50%", "50%"]}
-              html="<div style=&quot;color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;&quot;>主机<br><span style=&quot;color:#262626;font-size:2.5em&quot;>200</span>台</div>"
-              alignX="middle"
-              alignY="middle"
-            />
-          </Guide> */}
           <Geom
             type="intervalStack"
             position="percent"
