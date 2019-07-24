@@ -3,7 +3,7 @@ import { message } from 'antd';
 import { isTokenExpired } from '../utils/token-util';
 import { CONSTANTS } from '../utils/constant';
 const Api = {
-    base: 'http://localhost:8888/account'
+    base: 'http://localhost:8080/account'
 };
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
