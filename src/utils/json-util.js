@@ -7,7 +7,6 @@ import zh from '../locales/zh-CN.json';
  * @param {*} key
  */
 export function getInstant(key) {
-    key = 'consumeType';
     let searchTerms = []
     if (typeof(key) === 'string') {
         searchTerms = key.split('.');

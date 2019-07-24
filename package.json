@@ -10,6 +10,8 @@
     "babel-plugin-import": "^1.11.2",
     "bizcharts": "^3.5.4",
     "customize-cra": "^0.2.12",
+    "echarts": "^4.2.1",
+    "echarts-for-react": "^2.0.15-beta.0",
     "jwt-decode": "^2.2.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",

@@ -1,105 +1,69 @@
 import React, { useState, useEffect } from "react";
 import './statistics.less';
 import nprogressHoc from '../../components/nprogress/nprogress';
-import { Chart, Geom, Axis, Tooltip, Coord, Label, Legend, Guide } from "bizcharts";
-import DataSet from "@antv/data-set";
 import axios from "../../config/httpClient";
+import ReactEcharts from 'echarts-for-react';
+import { getInstant } from '../../utils/json-util';
 
 function Statistics() {
   // 声明一个新的叫做 “count” 的 state 变量
-  const [statisticsData, setStatisticsData] = useState(0);
-  const { DataView } = DataSet;
-  const { Html } = Guide;
-  const data = [
-    {
-      item: "事例一",
-      count: 40
-    },
-    {
-      item: "事例二",
-      count: 21
-    },
-    {
-      item: "事例三",
-      count: 17
-    },
-    {
-      item: "事例四",
-      count: 13
-    },
-    {
-      item: "事例五",
-      count: 9
-    }
-  ];
-  const dv = new DataView();
-  dv.source(data).transform({
-    type: "percent",
-    field: "count",
-    dimension: "item",
-    as: "percent"
-  });
-  const cols = {
-    percent: {
-      formatter: val => {
-        val = val * 100 + "%";
-        return val;
-      }
-    }
-  };
+  const [statisticsData, setStatisticsData] = useState();
+  const [statisticsTotal, setStatisticsTotal] = useState();
 
   useEffect(() => {
     axios.post('/bill/statisticsDataOfMonth', {
-      month: '2019-06'
+      month: '2019-07'
     }).then(rsp => {
-      console.log(rsp);
       setStatisticsData(rsp);
+      let total = 0;
+      rsp.forEach(item => {
+        total += item.money;
+      });
+      setStatisticsTotal((0 - total).toFixed(2))
     })
   }, []);
-
+  
+  function getOption() {
+    const legends = [];
+    const data = [];
+    if (statisticsData) {
+      statisticsData.forEach(item => {
+        const name = getInstant('consumeType.' + item.consumeType);
+        legends.push(name);
+        data.push({
+          value: 0 - item.money,
+          name: name
+        });
+      })
+    }
+    return {
+      tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c}¥ ({d}%)"
+      },
+      series: [
+        {
+          name:'消费类型',
+          type:'pie',
+          radius: ['50%', '70%'],
+          data: data
+        }
+      ]
+    }
+  }
 
   return (
-    <div>
-        <Chart
-          height={window.innerWidth}
-          data={dv}
-          scale={cols}
-          forceFit
-        >
-          <Coord type={"theta"} radius={0.75} innerRadius={0.6} />
-          <Axis name="percent" />
-          <Tooltip
-            showTitle={false}
-            itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
-          />
-          <Geom
-            type="intervalStack"
-            position="percent"
-            color="item"
-            tooltip={[
-              "item*percent",
-              (item, percent) => {
-                percent = percent * 100 + "%";
-                return {
-                  name: item,
-                  value: percent
-                };
-              }
-            ]}
-            style={{
-              lineWidth: 1,
-              stroke: "#fff"
-            }}
-          >
-            <Label
-              content="percent"
-              formatter={(val, item) => {
-                return item.point.item + ": " + val;
-              }}
-            />
-          </Geom>
-        </Chart>
+    <div className="statistics">
+      <div className="statistics-data">
+        <span className="statistics-data-name">总支出</span>
+        <span className="statistics-data-total"><span style={{fontSize: '16px', display: 'inline'}}>¥</span> {statisticsTotal}</span>
       </div>
+      <ReactEcharts
+        option={getOption()}
+        notMerge={true}
+        lazyUpdate={true}
+        theme={"theme_name"} />
+    </div>
   );
 }
 export default nprogressHoc(Statistics);
