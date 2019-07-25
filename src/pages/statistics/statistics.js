@@ -9,6 +9,7 @@ function Statistics() {
   // 声明一个新的叫做 “count” 的 state 变量
   const [statisticsData, setStatisticsData] = useState();
   const [statisticsTotal, setStatisticsTotal] = useState();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     axios.post('/bill/statisticsDataOfMonth', {
@@ -55,8 +56,12 @@ function Statistics() {
   return (
     <div className="statistics">
       <div className="statistics-type">
-        <div className="statistics-type-item">支出</div>
-        <div className="statistics-type-item">收入</div>
+        <div className={currentIndex === 0 ? 'statistics-type-item hover' : 'statistics-type-item' } onClick={
+          () => setCurrentIndex(0)
+        }>支出</div>
+        <div className={currentIndex === 1 ? 'statistics-type-item hover' : 'statistics-type-item' } onClick={
+          () => setCurrentIndex(1)
+        }>收入</div>
       </div>
       <div className="statistics-data">
         <span className="statistics-data-name">总支出</span>
