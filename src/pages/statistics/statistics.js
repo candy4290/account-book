@@ -54,6 +54,10 @@ function Statistics() {
 
   return (
     <div className="statistics">
+      <div className="statistics-type">
+        <div className="statistics-type-item">支出</div>
+        <div className="statistics-type-item">收入</div>
+      </div>
       <div className="statistics-data">
         <span className="statistics-data-name">总支出</span>
         <span className="statistics-data-total"><span style={{fontSize: '16px', display: 'inline'}}>¥</span> {statisticsTotal}</span>
