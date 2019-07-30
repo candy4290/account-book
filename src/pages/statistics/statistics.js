@@ -24,8 +24,8 @@ function Statistics() {
     axios.post('/bill/statisticsDataOfMonth', {
       month: date
     }).then(rsp => {
-      const consumeList = []; rsp.filter(item => item.money <= 0);
-      const incomeList = []; rsp.filter(item => item.money > 0);
+      const consumeList = [];
+      const incomeList = [];
       let totalConsume = 0;
       let totalIncome = 0;
       rsp.forEach(item => {
