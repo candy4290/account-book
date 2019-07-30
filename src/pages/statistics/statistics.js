@@ -4,25 +4,44 @@ import nprogressHoc from '../../components/nprogress/nprogress';
 import axios from "../../config/httpClient";
 import ReactEcharts from 'echarts-for-react';
 import { getInstant } from '../../utils/json-util';
+import { DatePicker } from 'antd';
+import moment from 'moment';
+const { MonthPicker } = DatePicker;
+const monthFormat = 'YYYY-MM';
 
 function Statistics() {
   // 声明一个新的叫做 “count” 的 state 变量
   const [statisticsData, setStatisticsData] = useState();
   const [statisticsTotal, setStatisticsTotal] = useState();
+  const [statisticsTotalIncome, setStatisticsTotalIncome] = useState();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    axios.post('/bill/statisticsDataOfMonth', {
-      month: '2019-07'
-    }).then(rsp => {
-      setStatisticsData(rsp);
-      let total = 0;
-      rsp.forEach(item => {
-        total += item.money;
-      });
-      setStatisticsTotal((0 - total).toFixed(2))
-    })
+      statisticsDataOfMonth(moment(new Date()).format(monthFormat));
   }, []);
+
+  function statisticsDataOfMonth(date) {
+    axios.post('/bill/statisticsDataOfMonth', {
+      month: date
+    }).then(rsp => {
+      const consumeList = []; rsp.filter(item => item.money <= 0);
+      const incomeList = []; rsp.filter(item => item.money > 0);
+      let totalConsume = 0;
+      let totalIncome = 0;
+      rsp.forEach(item => {
+        if (item.money <= 0) {
+          consumeList.push(item);
+          totalConsume += item.money;
+        } else {
+          incomeList.push(item);
+          totalIncome += item.money;
+        }
+      });
+      setStatisticsData(consumeList);
+      setStatisticsTotal((0 - totalConsume).toFixed(2));
+      setStatisticsTotalIncome((totalIncome).toFixed(2));
+    });
+  }
   
   function getOption() {
     const legends = [];
@@ -53,8 +72,18 @@ function Statistics() {
     }
   }
 
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current > moment().endOf('day');
+  }
+
+  function onChange(date) {
+    statisticsDataOfMonth(moment(date).format(monthFormat));
+  }
+
   return (
     <div className="statistics">
+      <MonthPicker disabledDate={disabledDate} onChange={(event) => {onChange(event)}} defaultValue={moment(new Date(), monthFormat)} format={monthFormat} placeholder="Select month"></MonthPicker>
       <div className="statistics-type">
         <div className={currentIndex === 0 ? 'statistics-type-item hover' : 'statistics-type-item' } onClick={
           () => setCurrentIndex(0)
@@ -63,15 +92,28 @@ function Statistics() {
           () => setCurrentIndex(1)
         }>收入</div>
       </div>
-      <div className="statistics-data">
-        <span className="statistics-data-name">总支出</span>
-        <span className="statistics-data-total"><span style={{fontSize: '16px', display: 'inline'}}>¥</span> {statisticsTotal}</span>
+      { currentIndex === 0 ?
+      // 总支出
+      <div>
+        <div className="statistics-data">
+          <span className="statistics-data-name">总支出</span>
+          <span className="statistics-data-total"><span style={{fontSize: '16px', display: 'inline'}}>¥</span> {statisticsTotal}</span>
+        </div>
+        <ReactEcharts
+          option={getOption()}
+          notMerge={true}
+          lazyUpdate={true}
+          theme={"theme_name"} />
       </div>
-      <ReactEcharts
-        option={getOption()}
-        notMerge={true}
-        lazyUpdate={true}
-        theme={"theme_name"} />
+      :
+      // 总收入
+      <div>
+        <div className="statistics-data">
+          <span className="statistics-data-name">总收入</span>
+          <span className="statistics-data-total"><span style={{fontSize: '16px', display: 'inline'}}>¥</span> {statisticsTotalIncome}</span>
+        </div>
+      </div>
+    }
     </div>
   );
 }

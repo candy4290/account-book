@@ -6,7 +6,6 @@
        linear-gradient(hsla(0,0%,100%,.3) 1px,transparent 0),
         linear-gradient(90deg,hsla(0,0%,100%,.3) 1px,transparent 0);
     background-size:75px 75px,75px 75px,15px 15px,15px 15px;
-    padding-top: 16px;
     &-type {
         height: 36px;
         background: #fff;
@@ -56,5 +55,14 @@
             font-weight: 600;
         }
     }
-
+    .ant-calendar-picker {
+        width: 100%;
+    }
+    .ant-input {
+        border-width: 0;
+        &:focus, &:hover {
+            border-width: 0 !important;
+            box-shadow: none;
+        }
+    }
 }
