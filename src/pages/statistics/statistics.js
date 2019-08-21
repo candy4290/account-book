@@ -6,18 +6,25 @@ import ReactEcharts from 'echarts-for-react';
 import { getInstant } from '../../utils/json-util';
 import { DatePicker } from 'antd';
 import moment from 'moment';
+import {withRouter} from "react-router-dom";
+
 const { MonthPicker } = DatePicker;
 const monthFormat = 'YYYY-MM';
 
 function Statistics() {
+  let currentMonth = moment(new Date()); // 当前统计的月份 默认值为当前月份
   // 声明一个新的叫做 “count” 的 state 变量
+  const [props] = useState();
   const [statisticsData, setStatisticsData] = useState();
   const [statisticsTotal, setStatisticsTotal] = useState();
   const [statisticsTotalIncome, setStatisticsTotalIncome] = useState();
+  const [onEvents] = useState({
+    'click': chartClick
+  });
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-      statisticsDataOfMonth(moment(new Date()).format(monthFormat));
+    statisticsDataOfMonth(currentMonth.format(monthFormat));
   }, []);
 
   function statisticsDataOfMonth(date) {
@@ -44,15 +51,16 @@ function Statistics() {
   }
   
   function getOption() {
-    const legends = [];
+    // const legends = [];
     const data = [];
     if (statisticsData) {
       statisticsData.forEach(item => {
         const name = getInstant('consumeType.' + item.consumeType);
-        legends.push(name);
+        // legends.push(name);
         data.push({
           value: 0 - item.money,
-          name: name
+          name: name,
+          consumeType: item.consumeType
         });
       })
     }
@@ -61,12 +69,19 @@ function Statistics() {
         trigger: 'item',
         formatter: "{a} <br/>{b}: {c}¥ ({d}%)"
       },
+      legend: {
+        padding: [0, 0],
+        y: 'bottom',
+      },
       series: [
         {
           name:'消费类型',
           type:'pie',
           radius: ['50%', '70%'],
-          data: data
+          data: data,
+          label: {
+            formatter: "{b}: {c}¥ ({d}%)"
+          }
         }
       ]
     }
@@ -78,12 +93,19 @@ function Statistics() {
   }
 
   function onChange(date) {
-    statisticsDataOfMonth(moment(date).format(monthFormat));
+    currentMonth = moment(date);
+    statisticsDataOfMonth(currentMonth.format(monthFormat));
+  }
+
+  function chartClick(e) {
+    // props.history.push('/item');
+    console.log(currentMonth.format(monthFormat), e.data.consumeType);
   }
 
   return (
+    console.log(props),
     <div className="statistics">
-      <MonthPicker disabledDate={disabledDate} onChange={(event) => {onChange(event)}} defaultValue={moment(new Date(), monthFormat)} format={monthFormat} placeholder="Select month"></MonthPicker>
+      <MonthPicker disabledDate={disabledDate} onChange={(event) => {onChange(event)}} defaultValue={currentMonth} format={monthFormat} placeholder="Select month"></MonthPicker>
       <div className="statistics-type">
         <div className={currentIndex === 0 ? 'statistics-type-item hover' : 'statistics-type-item' } onClick={
           () => setCurrentIndex(0)
@@ -100,6 +122,8 @@ function Statistics() {
           <span className="statistics-data-total"><span style={{fontSize: '16px', display: 'inline'}}>¥</span> {statisticsTotal}</span>
         </div>
         <ReactEcharts
+          style={{height: 400}}
+          onEvents={onEvents}
           option={getOption()}
           notMerge={true}
           lazyUpdate={true}
@@ -117,4 +141,4 @@ function Statistics() {
     </div>
   );
 }
-export default nprogressHoc(Statistics);
+export default nprogressHoc(withRouter(Statistics));
