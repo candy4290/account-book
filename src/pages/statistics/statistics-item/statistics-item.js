@@ -4,10 +4,13 @@ import { BillItem } from '../../../components/bill-item/bill-item';
 import nprogressHoc from '../../../components/nprogress/nprogress';
 import axios from "../../../config/httpClient";
 
-function StatisticsItem() {
+function StatisticsItem(props) {
+    let params = new URLSearchParams(props.location.search);
+    const [month] = useState(params.get('month'));
+    const [consumeType] = useState(params.get('consumeType'));
     const [billLists, setBillLists] = useState([]);
     useEffect(() => {
-        statisticsDataOfMonth('2019-08');
+        statisticsDataOfMonth(month, consumeType);
     }, []);
 
     function statisticsDataOfMonth(date, type) {

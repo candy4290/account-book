@@ -11,10 +11,9 @@ import {withRouter} from "react-router-dom";
 const { MonthPicker } = DatePicker;
 const monthFormat = 'YYYY-MM';
 
-function Statistics() {
+function Statistics(props) {
   let currentMonth = moment(new Date()); // 当前统计的月份 默认值为当前月份
   // 声明一个新的叫做 “count” 的 state 变量
-  const [props] = useState();
   const [statisticsData, setStatisticsData] = useState();
   const [statisticsTotal, setStatisticsTotal] = useState();
   const [statisticsTotalIncome, setStatisticsTotalIncome] = useState();
@@ -98,12 +97,10 @@ function Statistics() {
   }
 
   function chartClick(e) {
-    // props.history.push('/item');
-    console.log(currentMonth.format(monthFormat), e.data.consumeType);
+    props.history.push({pathname: '/statistics/item', search: `?month=${currentMonth.format(monthFormat)}&consumeType=${e.data.consumeType}`});
   }
 
   return (
-    console.log(props),
     <div className="statistics">
       <MonthPicker disabledDate={disabledDate} onChange={(event) => {onChange(event)}} defaultValue={currentMonth} format={monthFormat} placeholder="Select month"></MonthPicker>
       <div className="statistics-type">

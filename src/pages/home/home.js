@@ -62,10 +62,16 @@ class Home extends React.Component {
             this.menuSelected(event);
           }}>
             {this.props.childs.map((child, index) => 
-              <Menu.Item key={index}>
-                <Icon type={child.icon} />
-                <span className="nav-text">{child.title}</span>
-              </Menu.Item>
+              {
+                if (child.isNotMenu) {
+                  return null;
+                } else {
+                  return <Menu.Item key={index} >
+                    <Icon type={child.icon} />
+                    <span className="nav-text">{child.title}</span>
+                  </Menu.Item>
+                }
+              }
             )},
           </Menu>
         </Sider>
