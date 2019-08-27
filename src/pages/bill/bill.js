@@ -2,9 +2,10 @@ import React from 'react';
 import './bill.less';
 import nprogressHoc from '../../components/nprogress/nprogress';
 import axios from '../../config/httpClient';
-import { BillItem } from '../../components/bill-item/bill-item';
+import BillItem from '../../components/bill-item/bill-item';
 import { DatePicker } from 'antd';
 import moment from 'moment';
+import Api from '../../utils/api';
 const { MonthPicker } = DatePicker;
 const monthFormat = 'YYYY-MM';
 class Bill extends React.Component {
@@ -21,12 +22,12 @@ class Bill extends React.Component {
     }
 
     queryBillList(month) {
-        axios.post('/bill/billList', {month: month}).then((rsp) => {
+        axios.post(Api.billList, {month: month}).then((rsp) => {
             this.getStaticData(rsp);
             this.setState({
                 billLists: rsp
             });
-        })
+        });
     }
 
     getStaticData(list) {
@@ -41,7 +42,7 @@ class Bill extends React.Component {
         this.setState({
             payAmount: 0 - payAmount,
             incomeAmout: incomeAmout
-        })
+        });
     }
 
     disabledDate(current) {

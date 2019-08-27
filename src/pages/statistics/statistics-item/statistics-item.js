@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import './statistics-item.less';
-import { BillItem } from '../../../components/bill-item/bill-item';
+import BillItem from '../../../components/bill-item/bill-item';
 import nprogressHoc from '../../../components/nprogress/nprogress';
 import axios from "../../../config/httpClient";
+import Api from '../../../utils/api';
 
 function StatisticsItem(props) {
     let params = new URLSearchParams(props.location.search);
@@ -14,7 +15,7 @@ function StatisticsItem(props) {
     }, [month, consumeType]);
 
     function statisticsDataOfMonth(date, type) {
-        axios.post('/bill/billList', {
+        axios.post(Api.billList, {
         month: date,
         type: type
         }).then(rsp => {

@@ -15,7 +15,7 @@ const routerConfig = [
             {path: '/bill', component: Bill, exact: true, title: "账单", icon: 'video-camera'},
             {path: '/statistics', component: Statistics, exact: true, title: "统计", icon: 'video-camera'},
             {path: '/statistics/item', component: statisticsItem, exact: true, title: "统计类别", icon: 'video-camera', isNotMenu: true},
-            {path: '/book', component: Book, exact: true, title: "记账", icon: 'upload'},
+            {path: '/book/:id', component: Book, exact: true, title: "记账", icon: 'upload'},
         ]
     },
 ];

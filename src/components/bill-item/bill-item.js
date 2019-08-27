@@ -2,9 +2,12 @@ import React from 'react';
 import './bill-item.less';
 import {FormattedMessage} from 'react-intl';
 import { translateDate } from '../../utils/date-util';
-export class BillItem extends React.Component {
+import {withRouter} from "react-router-dom";
+class BillItem extends React.Component {
     render() {
-        return <div className="bill-item">
+        return <div className="bill-item" onClick={
+            () => { this.props.history.push(`/book/${this.props.bill.id}`) }
+            }>
             <img src="/imgs/header/photo-default.jpg" alt="商标" className="bill-item-logo"/>
             <div className="bill-item-info">
                 <div className="bill-item-info-detail">
@@ -19,3 +22,4 @@ export class BillItem extends React.Component {
         </div>
     }
 }
+export default withRouter(BillItem);

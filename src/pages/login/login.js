@@ -5,6 +5,7 @@ import {withRouter} from "react-router-dom";
 import nprogressHoc from '../../components/nprogress/nprogress';
 import axios from '../../config/httpClient';
 import { CONSTANTS } from '../../utils/constant';
+import Api from '../../utils/api';
 class Login extends React.Component {
   constructor() {
     super();
@@ -25,7 +26,7 @@ class Login extends React.Component {
       });
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          axios.post('/user/login', {
+          axios.post(Api.login, {
           userName: values.username,
           userPsw: values.password
           }).then(rsp => {

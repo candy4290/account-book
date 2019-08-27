@@ -7,6 +7,7 @@ import { getInstant } from '../../utils/json-util';
 import { DatePicker } from 'antd';
 import moment from 'moment';
 import {withRouter} from "react-router-dom";
+import Api from '../../utils/api';
 
 const { MonthPicker } = DatePicker;
 const monthFormat = 'YYYY-MM';
@@ -27,7 +28,7 @@ function Statistics(props) {
   }, [currentMonth]);
 
   function statisticsDataOfMonth(date) {
-    axios.post('/bill/statisticsDataOfMonth', {
+    axios.post(Api.statisticsDataOfMonth, {
       month: date
     }).then(rsp => {
       const consumeList = [];
