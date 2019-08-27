@@ -12,8 +12,8 @@ const { MonthPicker } = DatePicker;
 const monthFormat = 'YYYY-MM';
 
 function Statistics(props) {
-  let currentMonth = moment(new Date()); // 当前统计的月份 默认值为当前月份
   // 声明一个新的叫做 “count” 的 state 变量
+  const [currentMonth, setCurrentMonth] = useState(moment(new Date())); // 当前统计的月份 默认值为当前月份
   const [statisticsData, setStatisticsData] = useState();
   const [statisticsTotal, setStatisticsTotal] = useState();
   const [statisticsTotalIncome, setStatisticsTotalIncome] = useState();
@@ -24,7 +24,7 @@ function Statistics(props) {
 
   useEffect(() => {
     statisticsDataOfMonth(currentMonth.format(monthFormat));
-  }, []);
+  }, [currentMonth]);
 
   function statisticsDataOfMonth(date) {
     axios.post('/bill/statisticsDataOfMonth', {
@@ -92,8 +92,7 @@ function Statistics(props) {
   }
 
   function onChange(date) {
-    currentMonth = moment(date);
-    statisticsDataOfMonth(currentMonth.format(monthFormat));
+    setCurrentMonth(moment(date));
   }
 
   function chartClick(e) {

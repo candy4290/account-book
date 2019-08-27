@@ -11,7 +11,7 @@ function StatisticsItem(props) {
     const [billLists, setBillLists] = useState([]);
     useEffect(() => {
         statisticsDataOfMonth(month, consumeType);
-    }, []);
+    }, [month, consumeType]);
 
     function statisticsDataOfMonth(date, type) {
         axios.post('/bill/billList', {
