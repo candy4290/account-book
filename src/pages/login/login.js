@@ -26,7 +26,7 @@ class Login extends React.Component {
       });
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          axios.post(Api.login, {
+          axios.post(Api.userLogin, {
           userName: values.username,
           userPsw: values.password
           }).then(rsp => {
