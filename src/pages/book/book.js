@@ -5,6 +5,8 @@ import moment from 'moment';
 import axios from '../../config/httpClient';
 import { getInstant } from '../../utils/json-util';
 import Api from '../../utils/api';
+import {withRouter} from "react-router-dom";
+
 const { Option } = Select;
 const { TextArea } = Input;
 const dateFormat = 'YYYY-MM-DD';
@@ -71,6 +73,7 @@ class Book extends React.Component {
           });
           if (!isNaN(this.state.id)) {
             message.success('更新成功！');
+            this.props.history.goBack();
           } else {
             this.props.form.resetFields();
             message.success('本条记录已入账！');
@@ -168,4 +171,4 @@ class Book extends React.Component {
   }
 }
 const WrappedRegistrationForm = Form.create({ name: 'submit' })(Book);
-export default nprogressHoc(WrappedRegistrationForm);
+export default nprogressHoc(withRouter(WrappedRegistrationForm));
