@@ -5,16 +5,16 @@ import App from './pages/App';
 import * as serviceWorker from './serviceWorker';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import { IntlProvider } from 'react-intl';
-import { LocaleProvider } from 'antd';
+import { ConfigProvider } from 'antd';
 import moment from 'moment';
 import { flatJSON } from './utils/json-util'
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 ReactDOM.render(
     <IntlProvider locale='en' messages={flatJSON('consumeType')}>
-        <LocaleProvider locale={zhCN}>
+        <ConfigProvider locale={zhCN}>
             <App />
-        </LocaleProvider>
+        </ConfigProvider>
     </IntlProvider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
