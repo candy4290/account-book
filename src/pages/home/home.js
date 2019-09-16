@@ -1,13 +1,12 @@
 import { Route } from 'react-router-dom';
 import React from 'react';
 import './home.less';
-import { Layout, Menu, Icon, Dropdown, Tooltip } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import {withRouter} from "react-router-dom";
 import nprogressHoc from '../../components/nprogress/nprogress';
+import AccountHeader from '../../components/header/header';
 import Fullscreen from "react-full-screen";
-import { decodeToken } from '../../utils/token-util';
-import { CONSTANTS } from '../../utils/constant';
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider } = Layout;
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -50,12 +49,6 @@ class Home extends React.Component {
         <Sider
           breakpoint="lg"
           collapsedWidth="0"
-          // onBreakpoint={broken => {
-          //   console.log(broken);
-          // }}
-          // onCollapse={(collapsed, type) => {
-          //   console.log(collapsed, type);
-          // }}
         >
           <div className="logo">记账本</div>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={[this.state.currentSelectedIndex]}  onSelect={(event) => {
@@ -76,24 +69,7 @@ class Home extends React.Component {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0, textAlign: 'right' }}>
-            <Dropdown overlay={
-              <Menu onClick={() => {this.handleButtonClick()}}>
-                <Menu.Item key="1">
-                  <Icon type="logout" />
-                    退出登录
-                </Menu.Item>
-              </Menu>
-            }>
-              <div className="user-info">
-                <img src={process.env.PUBLIC_URL + '/imgs/header/photo-default.jpg'} alt="头像" />
-                <span>{this.state.isFull}{decodeToken(localStorage.getItem(CONSTANTS.ACCESS_TOKEN)).userName}</span>
-              </div>
-            </Dropdown>
-            <Tooltip placement="bottom" title={this.state.isFull ? '退出全屏' : '进入全屏'}>
-              <Icon type={this.state.isFull ? 'fullscreen-exit' : 'fullscreen'} onClick={() => this.goFull()}/>
-            </Tooltip>
-          </Header>
+          <AccountHeader isFull={this.state.isFull} goFullCallback = {this.goFull.bind(this)}/>
           <Content className="main-content">
             <div style={{ background: '#fff', minHeight: 360, height: '100%' }}> 
               {this.props.childs.map((child, index) => 
