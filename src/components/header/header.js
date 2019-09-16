@@ -2,11 +2,16 @@ import React, { useState, useEffect } from "react";
 import { decodeToken } from '../../utils/token-util';
 import { CONSTANTS } from '../../utils/constant';
 import { Layout, Menu, Icon, Dropdown, Tooltip } from 'antd';
+import {withRouter} from "react-router-dom";
 const { Header } = Layout;
 function AccountHeader(props) {
     const [isFull, setFull] = useState(props.isFull);
     function goFull() {
         props.goFullCallback(!isFull);
+    }
+    function handleButtonClick() {
+        localStorage.clear();
+        props.history.push('/login')
     }
     useEffect(() => {
         setFull(props.isFull);
@@ -14,7 +19,7 @@ function AccountHeader(props) {
     return (
         <Header style={{ background: '#fff', padding: 0, textAlign: 'right' }}>
             <Dropdown overlay={
-                <Menu onClick={() => {this.handleButtonClick()}}>
+                <Menu onClick={() => {handleButtonClick()}}>
                 <Menu.Item key="1">
                     <Icon type="logout" />
                     退出登录
@@ -32,4 +37,4 @@ function AccountHeader(props) {
         </Header>
     )
 }
-export default AccountHeader;
+export default withRouter(AccountHeader);

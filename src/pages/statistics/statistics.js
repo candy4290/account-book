@@ -50,7 +50,7 @@ function Statistics(props) {
     });
   }
   
-  function getOption() {
+  function getPieOption() {
     // const legends = [];
     const data = [];
     if (statisticsData) {
@@ -121,7 +121,7 @@ function Statistics(props) {
         <ReactEcharts
           style={{height: 400}}
           onEvents={onEvents}
-          option={getOption()}
+          option={getPieOption()}
           notMerge={true}
           lazyUpdate={true}
           theme={"theme_name"} />

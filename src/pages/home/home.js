@@ -20,10 +20,6 @@ class Home extends React.Component {
     this.setState({ isFull: !this.state.isFull });
   }
 
-  handleButtonClick() {
-    localStorage.clear();
-    this.props.history.push('/login')
-  }
   render() {
     return <Fullscreen
     enabled={this.state.isFull}>
