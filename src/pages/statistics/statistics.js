@@ -8,7 +8,7 @@ import { DatePicker } from 'antd';
 import moment from 'moment';
 import {withRouter} from "react-router-dom";
 import Api from '../../utils/api';
-
+import { dayNumbsOfMonth } from '../../utils/date-util';
 const { MonthPicker } = DatePicker;
 const monthFormat = 'YYYY-MM';
 
@@ -87,6 +87,56 @@ function Statistics(props) {
     }
   }
 
+  function getLineOption() {
+    const currentMonth = new Date().getMonth() + 1;
+    const dayInMonth = [];
+    const dayNums = dayNumbsOfMonth();
+    for (let i = 0; i < dayNums; i++) {
+      dayInMonth.push(`${currentMonth}-${i + 1}`)
+    }
+    return {
+      tooltip: {
+          trigger: 'axis'
+      },
+      legend: {
+          data:['收入','支出']
+      },
+      grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+      },
+      toolbox: {
+          feature: {
+              saveAsImage: {}
+          }
+      },
+      xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: dayInMonth
+      },
+      yAxis: {
+          type: 'value'
+      },
+      series: [
+          {
+              name:'收入',
+              type:'line',
+              stack: '总量',
+              data:[120, 132, 101, 134, 90, 230, 210]
+          },
+          {
+              name:'支出',
+              type:'line',
+              stack: '总量',
+              data:[220, 182, 191, 234, 290, 330, 310]
+          },
+      ]
+    }
+  }
+
   function disabledDate(current) {
     // Can not select days before today and today
     return current && current > moment().endOf('day');
@@ -118,6 +168,15 @@ function Statistics(props) {
           <span className="statistics-data-name">总支出</span>
           <span className="statistics-data-total"><span style={{fontSize: '16px', display: 'inline'}}>¥</span> {statisticsTotal}</span>
         </div>
+        <div>每日收支</div>
+        <ReactEcharts
+          style={{height: 400}}
+          onEvents={onEvents}
+          option={getLineOption()}
+          notMerge={true}
+          lazyUpdate={true}
+          theme={"theme_name"} />
+        <div>支出分类</div>
         <ReactEcharts
           style={{height: 400}}
           onEvents={onEvents}

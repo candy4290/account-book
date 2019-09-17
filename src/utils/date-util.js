@@ -40,3 +40,23 @@ export function translateDate(date) {
         return date.slice(5);
     }
 }
+
+/**
+ * 根据月份，返回该月的天数
+ *
+ * @export
+ * @param {*} month 0-11
+ * @returns
+ */
+export function dayNumbsOfMonth(month) {
+    var curDate = new Date();
+    var curMonth;
+    /* 获取当前月份 */
+    curMonth = month || curDate.getMonth();
+    /*  生成实际的月份: 由于curMonth会比实际月份小1, 故需加1 */
+    curDate.setMonth(curMonth + 1);
+    /* 将日期设置为0 */
+    curDate.setDate(0);
+    /* 返回当月的天数 */
+    return curDate.getDate();
+}
