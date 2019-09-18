@@ -14,14 +14,15 @@ class Book extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: +this.props.match.params.id,
+      id: this.props.match.params.id,
       confirmDirty: false,
       autoCompleteResult: [],
       submitLoading: false,
       consumeTypes: [],
-      billDetail: {}
+      billDetail: {},
+      isUpdate: this.props.match.params.id !== ':id'
     };
-    if (!isNaN(this.state.id)) {
+    if (this.state.isUpdate) {
       this.queryBillById(this.state.id);
     }
   }
@@ -64,14 +65,14 @@ class Book extends React.Component {
           money: +((+(values.prefix + values.money)).toFixed(2)),
           remark: values.remark
         }
-        if (!isNaN(this.state.id)) {
+        if (this.state.isUpdate) {
           req = Object.assign(req, {id: this.state.id});
         }
         axios.post(Api.bill, req).then(rsp => {
           this.setState({
             submitLoading: false
           });
-          if (!isNaN(this.state.id)) {
+          if (this.state.isUpdate) {
             message.success('更新成功！');
             this.props.history.goBack();
           } else {

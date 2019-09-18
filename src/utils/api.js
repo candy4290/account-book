@@ -39,4 +39,12 @@ export default class Api {
      * @memberof Api
      */
     static statisticsDataOfMonth = '/bill/statisticsDataOfMonth';
+
+    /**
+     * 统计数据-月份中每一天的收入总额、支出总额
+     *
+     * @static
+     * @memberof Api
+     */
+    static statisticsDayOfMonth = '/bill/statisticsDayOfMonth';
 }

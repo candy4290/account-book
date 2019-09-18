@@ -18,6 +18,8 @@ function Statistics(props) {
   const [statisticsData, setStatisticsData] = useState();
   const [statisticsTotal, setStatisticsTotal] = useState();
   const [statisticsTotalIncome, setStatisticsTotalIncome] = useState();
+  const [statisticsDayInOfMonth, setStatisticsDayInOfMonth] = useState([]);
+  const [statisticsDayOutOfMonth, setStatisticsDayOutOfMonth] = useState([]);
   const [onEvents] = useState({
     'click': chartClick
   });
@@ -25,6 +27,7 @@ function Statistics(props) {
 
   useEffect(() => {
     statisticsDataOfMonth(currentMonth.format(monthFormat));
+    statisticsDayOfMonth(currentMonth.format(monthFormat));
   }, [currentMonth]);
 
   function statisticsDataOfMonth(date) {
@@ -49,14 +52,35 @@ function Statistics(props) {
       setStatisticsTotalIncome((totalIncome).toFixed(2));
     });
   }
+
+  /**
+   * 查询某月中每一天的收入总额、支出总额
+   *
+   * @param {*} date
+   */
+  function statisticsDayOfMonth(date) {
+    axios.post(Api.statisticsDayOfMonth, {
+      month: date
+    }).then(rsp => {
+      const dayOfMonth = dayNumbsOfMonth();
+      const statisticsDayInOfMonth = new Array(dayOfMonth);
+      const statisticsDayOutOfMonth = new Array(dayOfMonth);
+      rsp.forEach(item => {
+        const dayIndex = item.consume_date.slice(8) - 1;
+        statisticsDayInOfMonth[dayIndex] = item.money_in;
+        statisticsDayOutOfMonth[dayIndex] = 0 - item.money_out;
+      });
+      console.log(statisticsDayInOfMonth)
+      setStatisticsDayInOfMonth(statisticsDayInOfMonth)
+      setStatisticsDayOutOfMonth(statisticsDayOutOfMonth)
+    });
+  }
   
   function getPieOption() {
-    // const legends = [];
     const data = [];
     if (statisticsData) {
       statisticsData.forEach(item => {
         const name = getInstant('consumeType.' + item.consumeType);
-        // legends.push(name);
         data.push({
           value: 0 - item.money,
           name: name,
@@ -124,14 +148,12 @@ function Statistics(props) {
           {
               name:'收入',
               type:'line',
-              stack: '总量',
-              data:[120, 132, 101, 134, 90, 230, 210]
+              data: statisticsDayInOfMonth
           },
           {
               name:'支出',
               type:'line',
-              stack: '总量',
-              data:[220, 182, 191, 234, 290, 330, 310]
+              data: statisticsDayOutOfMonth
           },
       ]
     }
@@ -168,15 +190,16 @@ function Statistics(props) {
           <span className="statistics-data-name">总支出</span>
           <span className="statistics-data-total"><span style={{fontSize: '16px', display: 'inline'}}>¥</span> {statisticsTotal}</span>
         </div>
-        <div>每日收支</div>
+        <div className="statistics-title">每日收支</div>
         <ReactEcharts
+          className="statistics-chart"
           style={{height: 400}}
           onEvents={onEvents}
           option={getLineOption()}
           notMerge={true}
           lazyUpdate={true}
           theme={"theme_name"} />
-        <div>支出分类</div>
+        <div className="statistics-title">支出分类</div>
         <ReactEcharts
           style={{height: 400}}
           onEvents={onEvents}
