@@ -12,13 +12,29 @@ export function getDate(preDay) {
     var month = date.getMonth() + 1;
     var strDate = date.getDate();
     if (month >= 1 && month <= 9) {
-            month = "0" + month;
-        }
+        month = "0" + month;
+    }
     if (strDate >= 0 && strDate <= 9) {
-           strDate = "0" + strDate;
-        }
+        strDate = "0" + strDate;
+    }
     var currentDate = date.getFullYear() + '-' + month + '-' + strDate;
     return currentDate;
+}
+
+/**
+ * 获取当前月份第dayIndex天的yyyy-MM-dd形式
+ *
+ * @export
+ * @param {*} month 月份 yyyy-MM
+ * @param {*} dayIndex 天的索引（从0开始）
+ * @returns
+ */
+export function getDateByMonthAndIndex(month, dayIndex) {
+    dayIndex++;
+    if (dayIndex >= 1 && dayIndex <= 9) {
+        dayIndex = "0" + dayIndex;
+    }
+    return month + '-' + dayIndex;
 }
 
 /**

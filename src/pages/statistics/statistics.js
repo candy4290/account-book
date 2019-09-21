@@ -8,7 +8,7 @@ import { DatePicker } from 'antd';
 import moment from 'moment';
 import {withRouter} from "react-router-dom";
 import Api from '../../utils/api';
-import { dayNumbsOfMonth } from '../../utils/date-util';
+import { dayNumbsOfMonth, getDateByMonthAndIndex } from '../../utils/date-util';
 const { MonthPicker } = DatePicker;
 const monthFormat = 'YYYY-MM';
 
@@ -22,6 +22,9 @@ function Statistics(props) {
   const [statisticsDayOutOfMonth, setStatisticsDayOutOfMonth] = useState([]);
   const [onEvents] = useState({
     'click': chartClick
+  });
+  const [onLineEvents] = useState({
+    'click': chartLineClick
   });
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -67,10 +70,9 @@ function Statistics(props) {
       const statisticsDayOutOfMonth = new Array(dayOfMonth);
       rsp.forEach(item => {
         const dayIndex = item.consume_date.slice(8) - 1;
-        statisticsDayInOfMonth[dayIndex] = item.money_in;
-        statisticsDayOutOfMonth[dayIndex] = 0 - item.money_out;
+        statisticsDayInOfMonth[dayIndex] = (item.money_in).toFixed(2);
+        statisticsDayOutOfMonth[dayIndex] = (0 - item.money_out).toFixed(2);
       });
-      console.log(statisticsDayInOfMonth)
       setStatisticsDayInOfMonth(statisticsDayInOfMonth)
       setStatisticsDayOutOfMonth(statisticsDayOutOfMonth)
     });
@@ -172,6 +174,10 @@ function Statistics(props) {
     props.history.push({pathname: '/statistics/item', search: `?month=${currentMonth.format(monthFormat)}&consumeType=${e.data.consumeType}`});
   }
 
+  function chartLineClick(e) {
+    props.history.push({pathname: '/statistics/item', search: `?consumeDate=${getDateByMonthAndIndex(currentMonth.format(monthFormat), e.dataIndex)}&isIncome=${e.seriesName === '收入'}`});
+  }
+
   return (
     <div className="statistics">
       <MonthPicker disabledDate={disabledDate} onChange={(event) => {onChange(event)}} defaultValue={currentMonth} format={monthFormat} placeholder="Select month"></MonthPicker>
@@ -194,7 +200,7 @@ function Statistics(props) {
         <ReactEcharts
           className="statistics-chart"
           style={{height: 400}}
-          onEvents={onEvents}
+          onEvents={onLineEvents}
           option={getLineOption()}
           notMerge={true}
           lazyUpdate={true}

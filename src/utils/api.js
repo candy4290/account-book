@@ -25,6 +25,14 @@ export default class Api {
     static billList = '/bill/billList';
 
     /**
+     * 查询某一天的账单列表
+     *
+     * @static
+     * @memberof Api
+     */
+    static billListOfDay = '/bill/billListOfDay';
+
+    /**
      * 用户登录
      *
      * @static
