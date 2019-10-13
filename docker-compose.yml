@@ -1,4 +1,10 @@
-# 映射本地文件到容器
+#此文件用来管理容器 docker-compose up -d 就会自动创建容器并在后台运行
+# 根据nginx镜像，生成容器,若无镜像，则先拉去镜像；
+# 将宿主机80端口映射到容器的80端口
+# 映射nginx.conf文件到容器的/etc/nginx/conf.d目录并覆盖default.conf文件
+# 映射build文件夹到容器的/usr/share/nginx/html文件夹
+# 覆盖容器启动后默认执行的命令。
+
 version: '3'
 services:
   # 服务名称
