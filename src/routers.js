@@ -5,6 +5,7 @@ import Bill from './pages/bill/bill';
 import Book from './pages/book/book';
 import Statistics from './pages/statistics/statistics';
 import statisticsItem from './pages/statistics/statistics-item/statistics-item';
+import SearchBill from './pages/search-bill/search-bill';
 
 const routerConfig = [
     {path: '/login', url: 'pages/login/login', title: '登录', component: WrappedNormalLoginForm, children: []},
@@ -18,6 +19,7 @@ const routerConfig = [
         children: [
             {path: '/', url: 'pages/home/home' ,component: Overview, exact: true, title: "首页", icon: 'user'},
             {path: '/bill', url: 'pages/bill/bill', component: Bill, exact: true, title: "账单", icon: 'video-camera'},
+            {path: '/bill/search', url: 'pages/search-bill/search-bill', component: SearchBill, exact: true, title: "搜索", icon: 'video-camera', isNotMenu: true},
             {path: '/statistics', url: 'pages/statistics/statistics', component: Statistics, exact: true, title: "统计", icon: 'video-camera'},
             {path: '/statistics/item', url: 'pages/statistics/statistics-item/statistics-item', component: statisticsItem, exact: true, title: "统计类别", icon: 'video-camera', isNotMenu: true},
             {path: '/book/:id', url: 'pages/book/book', component: Book, exact: true, 'title': "记账", icon: 'upload'},
