@@ -1,9 +1,35 @@
 .cxx-bill {
     @media screen and (min-width: 992px){
         /* 侧边栏出现时候 */
-        &-static {
+        &-static, &-search {
             width: calc(100% - 232px) !important;
-            margin-top: -24px;
+        }
+    }
+    &-search {
+        display: flex;
+        align-items: center;
+        height: 32px;
+        background: #fff;
+        border-top: 1px solid #f0f2f5;
+        position: fixed;
+        width: 100%;
+        padding: 0 8px;
+        cursor: pointer;
+        &-left {
+            flex-grow: 1;
+        }
+        &-split {
+            height: 16px;
+            width: 1px;
+            background: #f0f2f5;
+            margin: 0 8px;
+        }
+        &-right {
+            font-size: 14px;
+            line-height: 14px;
+            &:active {
+                color: #bb9246;
+            }
         }
     } 
     &-static {
@@ -15,6 +41,7 @@
         padding: 0 8px;
         position: fixed;
         width: 100%;
+        margin-top: 32px;
         .ant-calendar-picker {
             width: 100px;
         }
@@ -26,6 +53,6 @@
         }
     }
     &-list {
-        padding-top: 48px;
+        padding-top: 80px;
     }
 }

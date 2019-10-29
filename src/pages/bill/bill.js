@@ -1,6 +1,7 @@
 import React from 'react';
 import './bill.less';
 import nprogressHoc from '../../components/nprogress/nprogress';
+import {withRouter} from "react-router-dom";
 import axios from '../../config/httpClient';
 import BillItem from '../../components/bill-item/bill-item';
 import { DatePicker } from 'antd';
@@ -55,6 +56,11 @@ class Bill extends React.Component {
     }
     render() {
         return <div className="cxx-bill">
+            <div className="cxx-bill-search">
+                <div className="cxx-bill-search-left"></div>
+                <div className="cxx-bill-search-split"></div>
+                <div className="cxx-bill-search-right" onClick={() => this.props.history.push('/bill/search')}>搜索</div>
+            </div>
             <div className="cxx-bill-static">
                 <MonthPicker disabledDate={this.disabledDate} onChange={(event) => {this.onChange(event)}} defaultValue={moment(new Date(), monthFormat)} format={monthFormat} placeholder="Select month"></MonthPicker>
                 <div>
@@ -70,4 +76,4 @@ class Bill extends React.Component {
         </div>
     }
 }
-export default nprogressHoc(Bill);
+export default nprogressHoc(withRouter(Bill));

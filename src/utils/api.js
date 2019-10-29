@@ -55,4 +55,6 @@ export default class Api {
      * @memberof Api
      */
     static statisticsDayOfMonth = '/bill/statisticsDayOfMonth';
+
+    static billListByRemark = '/bill/billListByRemark';
 }

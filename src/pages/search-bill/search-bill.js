@@ -1,27 +1,35 @@
 import React, { useState, useEffect } from "react";
 import nprogressHoc from '../../components/nprogress/nprogress';
 import BillItem from '../../components/bill-item/bill-item';
+import axios from '../../config/httpClient';
 // import axios from "../../../config/httpClient";
 import { Input, Icon } from 'antd';
 import './search-bill.less';
+import Api from "../../utils/api";
 
 function SearchBill(props) {
+    const [remark, setRemark] = useState('');
     const [billLists, setBillLists] = useState([]);
     useEffect(() => {
-console.log('---');
-    }, []);
+        if (remark) {
+            axios.post(Api.billListByRemark, {remark: remark}).then(rsp => {
+                setBillLists(rsp);
+            });
+        }
+    }, [remark]);
     function pressEnter(e) {
-        console.log(e);
+        e.persist()
+        setRemark(e.target.value);
     }
     return (
         <div className="search-bill">
             <div className="search-bill-header">
-                <Input prefix={<Icon type="search" />} onChange={(event) => pressEnter(event)} placeholder="请输入订单相关信息" />
+                <Input prefix={<Icon type="search" />} onPressEnter={(e) => pressEnter(e)} placeholder="请输入订单相关信息" />
             </div>
-            <div className="cxx-bill-list">
-                {/* {billLists.map(item => 
+            <div>
+                {billLists.map(item => 
                     <BillItem key={item.id} bill={item} />
-                )} */}
+                )}
             </div>
         </div>
     );
