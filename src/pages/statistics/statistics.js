@@ -6,14 +6,13 @@ import ReactEcharts from 'echarts-for-react';
 import { getInstant } from '../../utils/json-util';
 import { DatePicker } from 'antd';
 import moment from 'moment';
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Api from '../../utils/api';
 import { dayNumbsOfMonth, getDateByMonthAndIndex } from '../../utils/date-util';
 const { MonthPicker } = DatePicker;
 const monthFormat = 'YYYY-MM';
 
 function Statistics(props) {
-  // 声明一个新的叫做 “count” 的 state 变量
   const [currentMonth, setCurrentMonth] = useState(moment(new Date())); // 当前统计的月份 默认值为当前月份
   const [statisticsData, setStatisticsData] = useState();
   const [statisticsTotal, setStatisticsTotal] = useState();
@@ -77,7 +76,12 @@ function Statistics(props) {
       setStatisticsDayOutOfMonth(statisticsDayOutOfMonth)
     });
   }
-  
+
+  /**
+   * 返回饼图数据
+   *
+   * @returns
+   */
   function getPieOption() {
     const data = [];
     if (statisticsData) {
@@ -101,8 +105,8 @@ function Statistics(props) {
       },
       series: [
         {
-          name:'消费类型',
-          type:'pie',
+          name: '消费类型',
+          type: 'pie',
           radius: ['50%', '70%'],
           data: data,
           label: {
@@ -113,6 +117,11 @@ function Statistics(props) {
     }
   }
 
+  /**
+   * 返回折线图数据
+   *
+   * @returns
+   */
   function getLineOption() {
     const currentMonth1 = currentMonth.format('MM');
     const dayInMonth = [];
@@ -122,107 +131,128 @@ function Statistics(props) {
     }
     return {
       tooltip: {
-          trigger: 'axis'
+        trigger: 'axis'
       },
       legend: {
-          data:['收入','支出']
+        data: ['收入', '支出']
       },
       grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
       },
       toolbox: {
-          feature: {
-              saveAsImage: {}
-          }
+        feature: {
+          saveAsImage: {}
+        }
       },
       xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: dayInMonth
+        type: 'category',
+        boundaryGap: false,
+        data: dayInMonth
       },
       yAxis: {
-          type: 'value'
+        type: 'value'
       },
       series: [
-          {
-              name:'收入',
-              type:'line',
-              data: statisticsDayInOfMonth
-          },
-          {
-              name:'支出',
-              type:'line',
-              data: statisticsDayOutOfMonth
-          },
+        {
+          name: '收入',
+          type: 'line',
+          data: statisticsDayInOfMonth
+        },
+        {
+          name: '支出',
+          type: 'line',
+          data: statisticsDayOutOfMonth
+        },
       ]
     }
   }
 
+  /**
+   * 月份选择禁用未来月份
+   *
+   * @param {*} current
+   * @returns
+   */
   function disabledDate(current) {
     // Can not select days before today and today
     return current && current > moment().endOf('day');
   }
 
+  /**
+   *日期选择发生变化时
+   *
+   * @param {*} date
+   */
   function onChange(date) {
     setCurrentMonth(moment(date));
   }
 
+  /**
+   * 饼图点击事件
+   *
+   * @param {*} e
+   */
   function chartClick(e) {
-    props.history.push({pathname: '/statistics/item', search: `?month=${currentMonth.format(monthFormat)}&consumeType=${e.data.consumeType}`});
+    props.history.push({ pathname: '/statistics/item', search: `?month=${currentMonth.format(monthFormat)}&consumeType=${e.data.consumeType}` });
   }
 
+  /**
+   * 折线图点击事件
+   *
+   * @param {*} e
+   */
   function chartLineClick(e) {
-    props.history.push({pathname: '/statistics/item', search: `?consumeDate=${getDateByMonthAndIndex(currentMonth.format(monthFormat), e.dataIndex)}&isIncome=${e.seriesName === '收入'}`});
+    props.history.push({ pathname: '/statistics/item', search: `?consumeDate=${getDateByMonthAndIndex(currentMonth.format(monthFormat), e.dataIndex)}&isIncome=${e.seriesName === '收入'}` });
   }
 
   return (
     <div className="statistics">
-      <MonthPicker disabledDate={disabledDate} onChange={(event) => {onChange(event)}} defaultValue={currentMonth} format={monthFormat} placeholder="Select month"></MonthPicker>
+      <MonthPicker disabledDate={disabledDate} onChange={(event) => { onChange(event) }} defaultValue={currentMonth} format={monthFormat} placeholder="Select month"></MonthPicker>
       <div className="statistics-type">
-        <div className={currentIndex === 0 ? 'statistics-type-item hover' : 'statistics-type-item' } onClick={
+        <div className={currentIndex === 0 ? 'statistics-type-item hover' : 'statistics-type-item'} onClick={
           () => setCurrentIndex(0)
         }>支出</div>
-        <div className={currentIndex === 1 ? 'statistics-type-item hover' : 'statistics-type-item' } onClick={
+        <div className={currentIndex === 1 ? 'statistics-type-item hover' : 'statistics-type-item'} onClick={
           () => setCurrentIndex(1)
         }>收入</div>
       </div>
-      { currentIndex === 0 ?
-      // 总支出
-      <div>
-        <div className="statistics-data">
-          <span className="statistics-data-name">总支出</span>
-          <span className="statistics-data-total"><span style={{fontSize: '16px', display: 'inline'}}>¥</span> {statisticsTotal}</span>
+      {currentIndex === 0 ?
+        // 总支出
+        <div>
+          <div className="statistics-data">
+            <span className="statistics-data-name">总支出</span>
+            <span className="statistics-data-total"><span style={{ fontSize: '16px', display: 'inline' }}>¥</span> {statisticsTotal}</span>
+          </div>
+          <div className="statistics-title">每日收支</div>
+          <ReactEcharts
+            className="statistics-chart"
+            style={{ height: 400 }}
+            onEvents={onLineEvents}
+            option={getLineOption()}
+            notMerge={true}
+            lazyUpdate={true}
+            theme={"theme_name"} />
+          <div className="statistics-title">支出分类</div>
+          <ReactEcharts
+            style={{ height: 400 }}
+            onEvents={onEvents}
+            option={getPieOption()}
+            notMerge={true}
+            lazyUpdate={true}
+            theme={"theme_name"} />
         </div>
-        <div className="statistics-title">每日收支</div>
-        <ReactEcharts
-          className="statistics-chart"
-          style={{height: 400}}
-          onEvents={onLineEvents}
-          option={getLineOption()}
-          notMerge={true}
-          lazyUpdate={true}
-          theme={"theme_name"} />
-        <div className="statistics-title">支出分类</div>
-        <ReactEcharts
-          style={{height: 400}}
-          onEvents={onEvents}
-          option={getPieOption()}
-          notMerge={true}
-          lazyUpdate={true}
-          theme={"theme_name"} />
-      </div>
-      :
-      // 总收入
-      <div>
-        <div className="statistics-data">
-          <span className="statistics-data-name">总收入</span>
-          <span className="statistics-data-total"><span style={{fontSize: '16px', display: 'inline'}}>¥</span> {statisticsTotalIncome}</span>
+        :
+        // 总收入
+        <div>
+          <div className="statistics-data">
+            <span className="statistics-data-name">总收入</span>
+            <span className="statistics-data-total"><span style={{ fontSize: '16px', display: 'inline' }}>¥</span> {statisticsTotalIncome}</span>
+          </div>
         </div>
-      </div>
-    }
+      }
     </div>
   );
 }
