@@ -114,11 +114,11 @@ function Statistics(props) {
   }
 
   function getLineOption() {
-    const currentMonth = new Date().getMonth() + 1;
+    const currentMonth1 = currentMonth.format('MM');
     const dayInMonth = [];
-    const dayNums = dayNumbsOfMonth();
+    const dayNums = dayNumbsOfMonth(+currentMonth1 - 1);
     for (let i = 0; i < dayNums; i++) {
-      dayInMonth.push(`${currentMonth}-${i + 1}`)
+      dayInMonth.push(`${currentMonth1}-${i + 1}`)
     }
     return {
       tooltip: {
