@@ -42,7 +42,7 @@ class Book extends React.Component {
       });
       this.props.form.setFieldsValue({
         consumeDate: moment(this.state.billDetail.consumeDate),
-        moment: this.state.billDetail.money < 0 ? '-' : '+',
+        prefix: this.state.billDetail.money < 0 ? '-' : '+',
         consumeType: this.state.billDetail.consumeType,
         money: Math.abs(this.state.billDetail.money),
         remark: this.state.billDetail.remark,
