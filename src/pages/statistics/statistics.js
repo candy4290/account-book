@@ -19,12 +19,6 @@ function Statistics(props) {
   const [statisticsTotalIncome, setStatisticsTotalIncome] = useState();
   const [statisticsDayInOfMonth, setStatisticsDayInOfMonth] = useState([]);
   const [statisticsDayOutOfMonth, setStatisticsDayOutOfMonth] = useState([]);
-  const [onEvents] = useState({
-    'click': chartClick
-  });
-  const [onLineEvents] = useState({
-    'click': chartLineClick
-  });
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -230,7 +224,7 @@ function Statistics(props) {
           <ReactEcharts
             className="statistics-chart"
             style={{ height: 400 }}
-            onEvents={onLineEvents}
+            onEvents={{'click': chartLineClick}}
             option={getLineOption()}
             notMerge={true}
             lazyUpdate={true}
@@ -238,7 +232,7 @@ function Statistics(props) {
           <div className="statistics-title">支出分类</div>
           <ReactEcharts
             style={{ height: 400 }}
-            onEvents={onEvents}
+            onEvents={{'click': chartClick}}
             option={getPieOption()}
             notMerge={true}
             lazyUpdate={true}
