@@ -10,6 +10,7 @@
     "babel-plugin-import": "^1.12.1",
     "bizcharts": "^3.5.5",
     "customize-cra": "^0.2.14",
+    "d3": "^5.15.0",
     "echarts": "^4.2.1",
     "echarts-for-react": "^2.0.15-beta.0",
     "jwt-decode": "^2.2.0",
