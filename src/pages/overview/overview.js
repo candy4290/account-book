@@ -4,25 +4,20 @@ import nprogressHoc from '../../components/nprogress/nprogress';
 import * as d3 from 'd3';
 import data from '../../locales/miserables.json';
 class Overview extends React.Component {
-    // 水波纹效果
+    // 
     drawChart() {
         var width = Math.max(960, window.innerWidth),
             height = Math.max(500, window.innerHeight);
-
         var i = 0;
-
         var svg = d3.select("#viz").append("svg")
             .attr("width", width)
             .attr("height", height);
-
         svg.append("rect")
             .attr("width", width)
             .attr("height", height)
             .on("ontouchstart" in document ? "touchmove" : "mousemove", particle);
-
         function particle() {
             var m = d3.mouse(this);
-
             svg.insert("circle", "rect")
                 .attr("cx", m[0])
                 .attr("cy", m[1])
@@ -92,6 +87,18 @@ class Overview extends React.Component {
             .join("circle")
             .attr("r", 5)
             .attr("fill", d => color(d.group))
+            .on('mouseover', function(d, i) {
+                d3.select(this)
+                .transition()
+                .duration(250)
+                .attr("r", 5+3)
+            })
+            .on('mouseout', function(d, i) {
+                d3.select(this)
+                .transition()
+                .duration(250)
+                .attr("r", 5)
+            })
             .call(drag(simulation));
 
         node.append("title")
