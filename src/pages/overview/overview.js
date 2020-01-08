@@ -304,4 +304,5 @@ class Overview extends React.Component {
         </div>;
     }
 }
+// 椭圆width/height = 1.6
 export default nprogressHoc(Overview);
