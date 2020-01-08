@@ -7,6 +7,7 @@ import tags from '../../locales/tags.json';
 class Overview extends React.Component {
     moveAnimation;
     mcList = []; // 云标签各项的大小及相对位置信息
+    tagCategory = ['人', '事', '地', '物', '组织'];
     drawChart() {
         var width = Math.max(960, window.innerWidth),
             height = Math.max(500, window.innerHeight);
@@ -173,6 +174,7 @@ class Overview extends React.Component {
 
     /**
      * 更新tag云标签的位置，连续调用则形状球体转动的效果
+     * 思路：绕球体运动
      *
      * @param {*} mcList
      * @memberof Overview
@@ -227,7 +229,7 @@ class Overview extends React.Component {
      * @memberof Overview
      */
     drawCloud() {
-        const div = d3.select('#viz').append('div')
+        const div = d3.select('#viz').insert('div', 'div')
         .attr('id', 'rotate');
         const aS = div.selectAll('a')
         .data(tags.tags.sort((a, b) => {
@@ -252,12 +254,12 @@ class Overview extends React.Component {
         const that = this;
         d3.selectAll('#rotate a')
         .on('mouseover', function(d, i) {
-            this.moveAnimation.stop();
+            that.moveAnimation.stop();
         })
         .on('mouseout', function(d, i) {
-            this.moveAnimation.restart(() => {
+            that.moveAnimation.restart(() => {
                 that.updatePosition(aS);
-            }, 30);
+            }, 30)
         });
     }
 
@@ -278,7 +280,7 @@ class Overview extends React.Component {
     }
 
     componentDidMount() {
-        this.drawCloud();
+        // this.drawCloud();
     }
 
     componentWillUnmount() {
@@ -286,9 +288,20 @@ class Overview extends React.Component {
             this.moveAnimation.stop();
         }
     }
-
+    // <span className="point"></span>
+    // <div className="text"></div>
     render() {
-        return <div id="viz"></div>;
+        return <div id="viz">
+            <div className="wrapper">
+            <div className="container">
+                <div className="ball ball1"></div>
+                <div className="ball ball2"></div>
+                <div className="ball ball3"></div>
+                <div className="ball ball4"></div>
+                <div className="ball ball5"></div>
+            </div>
+            </div>
+        </div>;
     }
 }
 export default nprogressHoc(Overview);

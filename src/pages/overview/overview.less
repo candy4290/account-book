@@ -33,3 +33,59 @@
   background: #000;
   border-radius: 5px;
 }
+.wrapper {
+  position: relative;
+  width: 366px;
+  height: 434px;
+  margin: 0 auto;
+  background: url('../../locales/images/operation_tag_bg.jpg') no-repeat;
+}
+@keyframes animX{
+  0% {left: 0px;}
+100% {left: 237px;}
+}
+@keyframes animY{
+  0% {top: 0px;}
+100% {top: 327px;}
+}
+.container {
+  height: 327px;
+  width: 237px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.ball {
+  height: 10px;
+  width: 10px;
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+  transform: rotate(75deg);
+}
+.ball1 {
+  animation: 
+    animX 10s cubic-bezier(0.4, 0, 0.6, 1) 0s infinite alternate,
+    animY 10s cubic-bezier(0.4, 0, 0.6, 1) -5s infinite alternate
+  }
+.ball2 {
+  animation: 
+    animX 10s cubic-bezier(0.4, 0, 0.6, 1) -4s infinite alternate,
+    animY 10s cubic-bezier(0.4, 0, 0.6, 1) -9s infinite alternate
+}
+.ball3 {
+  animation: 
+    animX 10s cubic-bezier(0.4, 0, 0.6, 1) -8s infinite alternate,
+    animY 10s cubic-bezier(0.4, 0, 0.6, 1) -13s infinite alternate
+}
+.ball4 {
+  animation: 
+    animX 10s cubic-bezier(0.4, 0, 0.6, 1) -12s infinite alternate,
+    animY 10s cubic-bezier(0.4, 0, 0.6, 1) -17s infinite alternate
+}
+.ball5 {
+  animation: 
+    animX 10s cubic-bezier(0.4, 0, 0.6, 1) -16s infinite alternate,
+    animY 10s cubic-bezier(0.4, 0, 0.6, 1) -21s infinite alternate
+}
