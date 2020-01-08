@@ -11,6 +11,19 @@
         {"id":1, "name":"H5"},
         {"id":1, "name":"RXJS"},
         {"id":1, "name":"Echarts"},
-        {"id":1, "name":"D3"}
+        {"id":1, "name":"D3"},
+        {"id":1, "name":"ng-zorro"},
+        {"id":2, "name":"PrimengNg"},
+        {"id":3, "name":"HighCharts"},
+        {"id":4, "name":"微信公众号"},
+        {"id":5, "name":"JS"},
+        {"id":6, "name":"NodeJs"},
+        {"id":7, "name":"NestJs"},
+        {"id":1, "name":"KOA"},
+        {"id":1, "name":"Express"},
+        {"id":1, "name":"Egg"},
+        {"id":1, "name":"Git"},
+        {"id":1, "name":"Docker"},
+        {"id":1, "name":"K8S"}
     ]
 }

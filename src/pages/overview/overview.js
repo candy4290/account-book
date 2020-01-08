@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 import data from '../../locales/miserables.json';
 import tags from '../../locales/tags.json';
 class Overview extends React.Component {
+    moveAnimation;
     mcList = []; // 云标签各项的大小及相对位置信息
     drawChart() {
         var width = Math.max(960, window.innerWidth),
@@ -151,17 +152,19 @@ class Overview extends React.Component {
 
     
     /**
-     * 根据生成的tag云宽，高集合均匀散布tag标签。
-     *
+     * 根据生成的tag云 "宽，高"集合均匀散布tag标签。
+     * 即生成球面上的点x,y,z的坐标
      * @param {*} mcList
      * @memberof Overview
      */
     positionAll(mcList) {
         const max = mcList.length;
-        const radius = 90;
+        const radius = 90; // 球体半径
         mcList.forEach((item, index) => {
+            // 生成两个角度，为了以此来生成均匀分布的球坐标
             const phi = Math.acos(-1 + (2 * (index + 1) - 1) / max); // 反余弦
             const theta = Math.sqrt(max*Math.PI)*phi; // 平方根
+            // cx,cy,cz为球坐标
             item.cx = radius * Math.cos(theta)*Math.sin(phi);
             item.cy = radius * Math.sin(theta)*Math.sin(phi);
             item.cz = radius * Math.cos(phi);
@@ -175,10 +178,13 @@ class Overview extends React.Component {
      * @memberof Overview
      */
     update(mcList) {
-        const a = (20 / 900) * 8;
-        const b = -20 / 900 * 8
-        var c = 0, d = 300, howElliptical = 1;
-        const {sa, ca, sb, cb, sc, cc} = this.sineCosine(a, b, c, Math.PI/90);
+        const a = (10 / 90) * 10;
+        const b = -10 / 90 * 10
+        if (Math.abs(a) <= 0.01 && Math.abs(b) <= 0.01) {
+            return;
+        }
+        var c = 0, d = 200, howElliptical = 1;
+        const {sa, ca, sb, cb, sc, cc} = this.sineCosine(a, b, c, Math.PI/180);
         for (let j = 0; j < mcList.length; j++) {
             var rx1=mcList[j].cx;
             var ry1=mcList[j].cy*ca+mcList[j].cz*(-sa);
@@ -204,6 +210,10 @@ class Overview extends React.Component {
             mcList[j].alpha=per;
             
             mcList[j].alpha=(mcList[j].alpha-0.6)*(10/6);
+
+            // 可以先隐藏一些元素
+            // let alpha = (per - 0.6) * (10 / 6);
+            // mcList[j].alpha=alpha * alpha * alpha - 0.2;
         }
     }
 
@@ -234,18 +244,18 @@ class Overview extends React.Component {
             const item = d3.select(this);
             item.style('left', d.cx + 450/2 - d.offsetWidth/2 + 'px');
             item.style('top', d.cy + 400/2 - d.offsetHeight/2 + 'px');
-            return 'red';
+            return 'black';
         });
-        const moveAnimation = d3.interval(() => {
+        this.moveAnimation = d3.interval(() => {
             this.updatePosition(aS);
         }, 30);
         const that = this;
         d3.selectAll('#rotate a')
         .on('mouseover', function(d, i) {
-            moveAnimation.stop();
+            this.moveAnimation.stop();
         })
         .on('mouseout', function(d, i) {
-            moveAnimation.restart(() => {
+            this.moveAnimation.restart(() => {
                 that.updatePosition(aS);
             }, 30);
         });
@@ -267,10 +277,14 @@ class Overview extends React.Component {
         });
     }
 
-
-
     componentDidMount() {
         this.drawCloud();
+    }
+
+    componentWillUnmount() {
+        if (this.moveAnimation) {
+            this.moveAnimation.stop();
+        }
     }
 
     render() {
