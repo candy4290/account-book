@@ -3,8 +3,9 @@ import './overview.less';
 import nprogressHoc from '../../components/nprogress/nprogress';
 import * as d3 from 'd3';
 import data from '../../locales/miserables.json';
+import tags from '../../locales/tags.json';
 class Overview extends React.Component {
-    // 
+    mcList = []; // 云标签各项的大小及相对位置信息
     drawChart() {
         var width = Math.max(960, window.innerWidth),
             height = Math.max(500, window.innerHeight);
@@ -118,9 +119,160 @@ class Overview extends React.Component {
 
         // invalidation.then(() => simulation.stop());
     }
-    componentDidMount() {
-        this.drawForce();
+
+    sineCosine(a, b, c, dtr) {
+        const sa = Math.sin(a * dtr); // 正弦
+        const ca = Math.cos(a * dtr); // 余弦
+        const sb = Math.sin(b * dtr);
+        const cb = Math.cos(b * dtr);
+        const sc = Math.sin(c * dtr);
+        const cc = Math.cos(c * dtr);
+        return {sa, ca, sb, cb, sc, cc}
     }
+
+    
+    /**
+     * 生成tag云各标签宽度，高度的列表
+     *
+     * @param {*} aS
+     * @returns
+     * @memberof Overview
+     */
+    generateMcList(aS) {
+        const mcList = [];
+        aS.nodes().forEach(node => {
+            mcList.push({
+                offsetWidth: node.offsetWidth,
+                offsetHeight: node.offsetHeight
+            });
+        });
+        return mcList;
+    }
+
+    
+    /**
+     * 根据生成的tag云宽，高集合均匀散布tag标签。
+     *
+     * @param {*} mcList
+     * @memberof Overview
+     */
+    positionAll(mcList) {
+        const max = mcList.length;
+        const radius = 90;
+        mcList.forEach((item, index) => {
+            const phi = Math.acos(-1 + (2 * (index + 1) - 1) / max); // 反余弦
+            const theta = Math.sqrt(max*Math.PI)*phi; // 平方根
+            item.cx = radius * Math.cos(theta)*Math.sin(phi);
+            item.cy = radius * Math.sin(theta)*Math.sin(phi);
+            item.cz = radius * Math.cos(phi);
+        });
+    }
+
+    /**
+     * 更新tag云标签的位置，连续调用则形状球体转动的效果
+     *
+     * @param {*} mcList
+     * @memberof Overview
+     */
+    update(mcList) {
+        const a = (20 / 900) * 8;
+        const b = -20 / 900 * 8
+        var c = 0, d = 300, howElliptical = 1;
+        const {sa, ca, sb, cb, sc, cc} = this.sineCosine(a, b, c, Math.PI/90);
+        for (let j = 0; j < mcList.length; j++) {
+            var rx1=mcList[j].cx;
+            var ry1=mcList[j].cy*ca+mcList[j].cz*(-sa);
+            var rz1=mcList[j].cy*sa+mcList[j].cz*ca;
+            
+            var rx2=rx1*cb+rz1*sb;
+            var ry2=ry1;
+            var rz2=rx1*(-sb)+rz1*cb;
+            
+            var rx3=rx2*cc+ry2*(-sc);
+            var ry3=rx2*sc+ry2*cc;
+            var rz3=rz2;
+            
+            mcList[j].cx=rx3;
+            mcList[j].cy=ry3;
+            mcList[j].cz=rz3;
+            
+            const per=d/(d+rz3);
+            
+            mcList[j].x=(howElliptical*rx3*per)-(howElliptical*2);
+            mcList[j].y=ry3*per;
+            mcList[j].scale=per;
+            mcList[j].alpha=per;
+            
+            mcList[j].alpha=(mcList[j].alpha-0.6)*(10/6);
+        }
+    }
+
+    /**
+     * 创建tag云标签，3d转动效果
+     * 思路：先将所有tag均匀分布到球体上，球体效果依赖于改变tag的字体大小，z-index,透明度来实现。
+     * 然后通过算法实现：做球体朝某一个方向转动。
+     * 主要算法：1.均匀散布到球体的算法
+     *          2.转动效果算法
+     *
+     * @memberof Overview
+     */
+    drawCloud() {
+        const div = d3.select('#viz').append('div')
+        .attr('id', 'rotate');
+        const aS = div.selectAll('a')
+        .data(tags.tags.sort((a, b) => {
+            return Math.random() < 0.5?1:-1;
+        }))
+        .join('a')
+        .text(d => { return d.name})
+        .style('color', 'black');
+        this.mcList = this.generateMcList(aS);
+        this.positionAll(this.mcList);
+        aS.data(this.mcList)
+        .join('a')
+        .style('color', function(d, i) {
+            const item = d3.select(this);
+            item.style('left', d.cx + 450/2 - d.offsetWidth/2 + 'px');
+            item.style('top', d.cy + 400/2 - d.offsetHeight/2 + 'px');
+            return 'red';
+        });
+        const moveAnimation = d3.interval(() => {
+            this.updatePosition(aS);
+        }, 30);
+        const that = this;
+        d3.selectAll('#rotate a')
+        .on('mouseover', function(d, i) {
+            moveAnimation.stop();
+        })
+        .on('mouseout', function(d, i) {
+            moveAnimation.restart(() => {
+                that.updatePosition(aS);
+            }, 30);
+        });
+    }
+
+    updatePosition(aS) {
+        this.update(this.mcList);
+        aS.data(this.mcList)
+        .join('a')
+        .style('color', function(d, i) {
+            const item = d3.select(this);
+            item.style('top', d.cy + 400/2 - d.offsetHeight/2 + 'px');
+            item.style('left', d.cx + 450/2 - d.offsetWidth/2 + 'px');
+            item.style('font-size', Math.ceil(12*d.scale/2) + 8 + 'px');
+            item.style('z-index', i);
+            item.style('filter', `alpha(opacity=")${100*d.scale/2 + 8}px`);
+            item.style('opacity', d.alpha);
+            return '#bb9246';
+        });
+    }
+
+
+
+    componentDidMount() {
+        this.drawCloud();
+    }
+
     render() {
         return <div id="viz"></div>;
     }
