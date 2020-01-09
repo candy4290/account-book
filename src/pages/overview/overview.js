@@ -4,6 +4,7 @@ import nprogressHoc from '../../components/nprogress/nprogress';
 import * as d3 from 'd3';
 import data from '../../locales/miserables.json';
 import tags from '../../locales/tags.json';
+import zhMapPaths from '../../locales/china-map-svg.json';
 class Overview extends React.Component {
     moveAnimation;
     mcList = []; // 云标签各项的大小及相对位置信息
@@ -279,8 +280,43 @@ class Overview extends React.Component {
         });
     }
 
+    /**
+     * 中国地图
+     *
+     * @memberof Overview
+     */
+    drawMap() {
+        d3.select('#chinaMap')
+        .selectAll('.state')
+        .data(zhMapPaths.zhMapPaths)
+        .join('path')
+        .attr('class', 'state')
+        .attr('d', function(d) { return d.d})
+        .style('fill', '#eee')
+        .style('stroke', '#fff')
+        .on('mouseenter', function(d, i) {
+            var m = d3.mouse(this);
+            d3.select(this)
+            .style('fill', '#bb9246');
+            d3.select('#tooltip')
+            .text(d.n)
+            .style('opacity', 1)
+            .style('top', m[1] + 'px')
+            .style('left', m[0] + 'px')
+        })
+        .on('mouseleave', function(d, i) {
+            d3.select(this)
+            d3.select(this)
+            .style('fill', '#eee');
+            d3.select('#tooltip')
+            .text(d.n)
+            .style('opacity', 0)
+        });
+    }
+
     componentDidMount() {
         // this.drawCloud();
+        this.drawMap();
     }
 
     componentWillUnmount() {
@@ -288,19 +324,21 @@ class Overview extends React.Component {
             this.moveAnimation.stop();
         }
     }
-    // <span className="point"></span>
-    // <div className="text"></div>
+
+    // 五个点绕椭圆运行
+    // <div className="wrapper">
+    //     <div className="container">
+    //         <div className="ball ball1"></div>
+    //         <div className="ball ball2"></div>
+    //         <div className="ball ball3"></div>
+    //         <div className="ball ball4"></div>
+    //         <div className="ball ball5"></div>
+    //     </div>
+    // </div>
     render() {
         return <div id="viz">
-            <div className="wrapper">
-            <div className="container">
-                <div className="ball ball1"></div>
-                <div className="ball ball2"></div>
-                <div className="ball ball3"></div>
-                <div className="ball ball4"></div>
-                <div className="ball ball5"></div>
-            </div>
-            </div>
+            <div id="tooltip"></div>
+            <svg width="560" height="470" id="chinaMap"></svg>
         </div>;
     }
 }
