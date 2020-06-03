@@ -104,7 +104,6 @@ class Login extends React.Component {
 
     mat4y.copy(camera.matrixWorldInverse);
 
-    console.log(camera.matrixWorldInverse);
     var myArr = new Float32Array(mat4y.elements);
 
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, myArr);
