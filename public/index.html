@@ -26,6 +26,23 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>记账本</title>
+    <script id="vertexShader" type="x-shader/x-vertex">
+      attribute vec4 position;
+      attribute float scale;
+      uniform mat4 modelViewMatrix;//
+      uniform mat4 projectionMatrix;//
+      void main() {
+      vec4 mvPosition = modelViewMatrix * position;
+      gl_PointSize = scale*1.0 * ( 200.0 / - mvPosition.z );
+      gl_Position = projectionMatrix * mvPosition;
+      }
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+      void main() {
+        if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.49 ) discard;
+        gl_FragColor = vec4(0.0,1.0,1.0,1.0);
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
